@@ -28,14 +28,14 @@ export default function Hero() {
           id="home"
           className="min-h-screen flex items-center relative bg-cover bg-center"
           style={{
-            backgroundImage: `url('https://raw.githubusercontent.com/PathumRathnayaka/software/refs/heads/main/portfoliyocover.png')`,
+            backgroundImage: `url('https://raw.githubusercontent.com/ThavinduLiyanage/software/refs/heads/main/portfoliyocover.png')`,
           }}
       >
         {/* Mobile Background Override */}
         <div
             className="absolute inset-0 bg-cover bg-center sm:hidden"
             style={{
-              backgroundImage: `url('https://github.com/PathumRathnayaka/software/blob/main/mobilecover1.png?raw=true')`,
+              backgroundImage: `url('https://github.com/ThavinduLiyanage/software/blob/main/mobilecover1.png?raw=true')`,
             }}
         />
 
@@ -51,7 +51,7 @@ export default function Hero() {
                   delay={500}
                   startOnView={true}
               >
-                Pathum Rathnayaka
+                Thavindu Liyanage
               </TypingAnimation>
 
               <motion.div
@@ -72,7 +72,7 @@ export default function Hero() {
 
       <motion.div variants={itemVariants} className="flex space-x-4">
         <a
-          href="https://github.com/PathumRathnayaka"
+          href="https://github.com/ThavinduLiyanage"
           target="_blank"
           rel="noopener noreferrer"
           className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
@@ -80,7 +80,7 @@ export default function Hero() {
           <GitHub className="w-6 h-6 text-white" />
         </a>
         <a
-          href="https://www.linkedin.com/in/pathum-rathnayaka-02631b1b8/"
+          href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
           target="_blank"
           rel="noopener noreferrer"
           className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
@@ -88,7 +88,7 @@ export default function Hero() {
           <Linkedin className="w-6 h-6 text-white" />
         </a>
         <a
-          href="mailto:thilinapathumrathnayaka@gmail.com"
+          href="mailto:thilinaThavinduLiyanage@gmail.com"
           className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
         >
           <Mail className="w-6 h-6 text-white" />

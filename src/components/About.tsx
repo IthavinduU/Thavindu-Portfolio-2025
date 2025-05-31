@@ -80,7 +80,7 @@ export default function About() {
                 <div className="flex items-center space-x-4">
                   <CardItem translateZ={20}>
                     <img
-                      src="https://github.com/PathumRathnayaka/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
+                      src="https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
                       className="w-12 h-12 rounded-full object-cover"
                       alt="Avatar"
                     />
@@ -90,13 +90,13 @@ export default function About() {
                       translateZ={20}
                       className="font-semibold text-neutral-800 dark:text-white"
                     >
-                      Pathum Rathnayaka
+                      Thavindu Liyanage
                     </CardItem>
                     <CardItem
                       translateZ={20}
                       className="text-sm text-neutral-500 dark:text-neutral-400"
                     >
-                      @pathumr_dev
+                      @Thavindur_dev
                     </CardItem>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function About() {
                 {/* Image */}
                 <CardItem translateZ={100} className="w-full mt-4">
                   <img
-                    src="https://github.com/PathumRathnayaka/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
+                    src="https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
                     className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                     alt="Post image"
                   />
@@ -188,7 +188,7 @@ export default function About() {
             >
               <div className="bg-white dark:bg-gray-800/30 rounded-full p-1 shadow-md">
                 <a
-                  href="/Pathum Rathnayaka.pdf"
+                  href="/Thavindu Liyanage.pdf"
                   className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg inline-block hover:shadow-xl hover:scale-105"
                 >
                   Download my CV

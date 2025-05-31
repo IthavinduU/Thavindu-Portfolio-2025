@@ -79,7 +79,7 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { icon: <Mail className="w-6 h-6" />, title: "Email", content: "thilinapathumrathnayaka@gmail.com", link: "mailto:thilinapathumrathnayaka@gmail.com" },
+    { icon: <Mail className="w-6 h-6" />, title: "Email", content: "thilinaThavinduLiyanage@gmail.com", link: "mailto:thilinaThavinduLiyanage@gmail.com" },
     { icon: <Phone className="w-6 h-6" />, title: "Phone", content: "+94 761040031", link: "tel:+94 761040031" },
     { icon: <MapPin className="w-6 h-6" />, title: "Location", content: "Colombo, Sri Lanka", link: "#" },
   ];
