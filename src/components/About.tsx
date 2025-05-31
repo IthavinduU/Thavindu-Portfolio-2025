@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { motion } from "framer-motion";
 import TerminalTypewriter from "./ui/TerminalTypewriter";
 
@@ -44,10 +43,12 @@ export default function About() {
   useEffect(() => {
     async function fetchGithubStats() {
       try {
-        const userRes = await fetch("https://api.github.com/users/Thavindur_dev");
+        const username = "IthavinduU";
+
+        const userRes = await fetch(`https://api.github.com/users/${username}`);
         const userData = await userRes.json();
 
-        const reposRes = await fetch("https://api.github.com/users/Thavindur_dev/repos?per_page=100");
+        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
         const reposData = await reposRes.json();
 
         const totalStars = reposData.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -69,8 +70,7 @@ export default function About() {
     <section id="about" className="py-20 bg-gray-50 dark:bg-[#092537]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto text-center">
-
-          {/* Static heading with blinking cursor */}
+          {/* Blinking Cursor Title */}
           <div className="mb-5 text-2xl md:text-base flex justify-center">
             <div className="font-mono text-lg md:text-xl text-gray-900 dark:text-white">
               <span>Absolute Coding at its Finest.</span>
@@ -82,75 +82,62 @@ export default function About() {
           <div className="mb-8 flex justify-center">
             <TerminalTypewriter />
           </div>
-
         </div>
 
-        {/* Card and content section */}
+        {/* Grid section */}
         <div className="grid md:grid-cols-2 gap-12 items-center mt-5">
-          <div className="relative w-3/4 mx-auto">
-            <CardContainer className="inter-var">
-              <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-[#0f172a] dark:border-white/[0.1] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
-                
-                {/* Header with avatar and name */}
-                <div className="flex items-center space-x-4">
-                  <CardItem translateZ={20}>
-                    <img
-                      src="https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
-                      className="w-12 h-12 rounded-full object-cover"
-                      alt="Avatar"
-                    />
-                  </CardItem>
-                  <div>
-                    <CardItem translateZ={20} className="font-semibold text-neutral-800 dark:text-white">
-                      Thavindu Liyanage
-                    </CardItem>
-                    <CardItem translateZ={20} className="text-sm text-neutral-500 dark:text-neutral-400">
-                      @Thavindur_dev
-                    </CardItem>
-                  </div>
-                </div>
 
-                {/* Tweet content */}
-                <CardItem as="p" translateZ={40} className="text-neutral-700 dark:text-neutral-300 mt-4 text-sm">
-                  Focused on the future, inspired by the view. 🚀💻 #WebDev #React #TechLife
-                </CardItem>
+        {/* GitHub Stats Section - Aligned + Smaller */}
+<div className="w-full flex flex-col items-center md:items-start space-y-4 px-4">
+  {/* GitHub Stats Block */}
+  <div className="bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-white/[0.1] rounded-xl p-4 shadow w-full max-w-sm">
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3 text-center md:text-left">
+      GitHub Stats
+    </h3>
+    <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 font-mono">
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
+          {githubStats.followers}
+        </span>
+        <span>Followers</span>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
+          {githubStats.public_repos}
+        </span>
+        <span>Repos</span>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
+          {githubStats.stars}
+        </span>
+        <span>Stars</span>
+      </div>
+    </div>
+  </div>
 
-                {/* Image */}
-                <CardItem translateZ={100} className="w-full mt-4">
-                  <img
-                    src="https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/cover3_053717.jpg?raw=true"
-                    className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                    alt="Post image"
-                  />
-                </CardItem>
+  {/* GitHub Stats Image */}
+  <img
+    src="https://github-readme-stats.vercel.app/api?username=IthavinduU&show_icons=true&theme=tokyonight&hide_title=true"
+    alt="GitHub Stats"
+    className="rounded-xl shadow w-full max-w-sm"
+  />
 
-                {/* Action buttons */}
-                <div className="flex justify-around items-center mt-6 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <CardItem translateZ={20} className="hover:text-blue-500 cursor-pointer">💬 Comment</CardItem>
-                  <CardItem translateZ={20} className="hover:text-green-500 cursor-pointer">🔁 Repost</CardItem>
-                  <CardItem translateZ={20} className="hover:text-pink-500 cursor-pointer">❤️ Like</CardItem>
-                  <CardItem translateZ={20} className="hover:text-yellow-500 cursor-pointer">📌 Save</CardItem>
-                </div>
+  {/* Top Languages */}
+  <img
+    src="https://github-readme-stats.vercel.app/api/top-langs/?username=IthavinduU&layout=compact&theme=tokyonight"
+    alt="Top Languages"
+    className="rounded-xl shadow w-full max-w-sm"
+  />
 
-                {/* GitHub stats */}
-                <div className="flex justify-around items-center mt-4 text-neutral-700 dark:text-neutral-300 text-sm font-mono space-x-6">
-                  <div className="flex items-center space-x-1">
-                    <span>👥</span>
-                    <span>{githubStats.followers} Followers</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <span>📂</span>
-                    <span>{githubStats.public_repos} Repos</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <span>⭐️</span>
-                    <span>{githubStats.stars} Stars</span>
-                  </div>
-                </div>
+  {/* GitHub Streak */}
+  <img
+    src="https://github-readme-streak-stats.herokuapp.com/?user=IthavinduU&theme=tokyonight"
+    alt="GitHub Streak"
+    className="rounded-xl shadow w-full max-w-sm"
+  />
+</div>
 
-              </CardBody>
-            </CardContainer>
-          </div>
 
           {/* About Text */}
           <div className="text-center md:text-left">
@@ -192,15 +179,6 @@ export default function About() {
                   {skill}
                 </motion.span>
               ))}
-            </motion.div>
-
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="flex justify-center md:justify-start mt-6"
-            >
             </motion.div>
           </div>
         </div>
