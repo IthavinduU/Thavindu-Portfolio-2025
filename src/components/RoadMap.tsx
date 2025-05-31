@@ -1,19 +1,8 @@
 import { motion } from "framer-motion";
 import { Tooltip } from "react-tooltip";
-import {
-  SiMongodb,
-  SiDocker,
-  SiReact,
-  SiGoland,
-  SiPython,
-  SiNodedotjs,
-  SiPhp,
-  SiVuedotjs,
-  SiAmazonaws,
-  SiPostman,
-} from "react-icons/si";
-import { FaGraduationCap, FaUserTie, FaSchool } from "react-icons/fa";
+import { FaGraduationCap, FaUserTie, FaSchool, FaPenNib } from "react-icons/fa";
 
+// Tooltip-enabled animated icon
 const Icon = ({ icon: IconComp, label }: { icon: any; label: string }) => (
   <>
     <motion.div
@@ -74,7 +63,7 @@ const RoadMap = () => {
   const education = [
     {
       title: "BSc. (Hons) Computer Science",
-      place: "University of Westminster -  United Kingdom",
+      place: "University of Westminster - United Kingdom",
       duration: "2021 - 2025",
       details: [
         "Major in Backend Development",
@@ -106,23 +95,28 @@ const RoadMap = () => {
       place: "Petvisor - United Kingdom",
       duration: "June 2023 - June 2024",
       details: [
-        "Worked on a real-time appointment booking system running on a PHP(Phalcon) back-end and Vue front-end."
+        "Worked on a real-time appointment booking system running on a PHP(Phalcon) back-end and Vue front-end.",
       ],
+
       icon: FaUserTie,
     },
     {
       title: "Freelance Developer",
       place: "Upwork - Remote",
       duration: "2020 - Present",
-      details: ["Delivering high-quality, streamlined software and web solutions tailored to diverse client requirements."],
+      details: [
+        "Delivering high-quality, streamlined software and web solutions tailored to diverse client requirements.",
+      ],
       icon: FaUserTie,
     },
     {
       title: "Technical Writer",
       place: "Medium",
       duration: "2023 - Present",
-      details: ["Contributing to the community with the knowledge I pursue throughout my technical journey."],
-      icon: FaUserTie,
+      details: [
+        "Contributing to the community with the knowledge I pursue throughout my technical journey.",
+      ],
+      icon: FaPenNib, // Pen icon to represent writing
     },
   ];
 
