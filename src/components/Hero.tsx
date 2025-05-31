@@ -1,5 +1,12 @@
 import React from "react";
-import { Github as GitHub, Linkedin, Mail, Briefcase, Users, CheckCircle } from "lucide-react";
+import {
+  Github as GitHub,
+  Linkedin,
+  Mail,
+  Briefcase,
+  Users,
+  CheckCircle,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
@@ -28,120 +35,139 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-screen bg-cover bg-center flex items-center overflow-visible"
+      className="relative min-h-screen bg-cover bg-center flex items-center"
       style={{
         backgroundImage: `url('https://github.com/ThavinduLiyanage/software/raw/main/portfoliyocover.png')`,
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50 z-0" />
 
-      <div className="container mx-auto px-4 relative z-10 max-w-4xl text-center text-white space-y-8 overflow-visible">
-        {/* Gradient name */}
-        <motion.h1
-          variants={fadeIn("down", 0)}
-          initial="hidden"
-          animate="show"
-          className="text-4xl md:text-5xl font-extrabold leading-tight bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent"
-        >
-          Thavindu Liyanage
-        </motion.h1>
+      <div className="relative z-10 container mx-auto px-4 py-16">
+        <div className="flex flex-col md:flex-row items-center justify-between bg-black/60 backdrop-blur-lg rounded-xl p-8 md:p-12 shadow-xl">
+          {/* LEFT SIDE - Content */}
+          <div className="text-white max-w-xl space-y-6 text-center md:text-left">
+            {/* Name */}
+            <motion.h1
+              variants={fadeIn("down", 0)}
+              initial="hidden"
+              animate="show"
+              className="text-4xl md:text-5xl font-extrabold leading-tight bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent"
+            >
+              Thavindu Liyanage
+            </motion.h1>
 
-        {/* Typewriter roles */}
-        <motion.div
-          variants={fadeIn("down", 0.3)}
-          initial="hidden"
-          animate="show"
-          className="text-2xl font-semibold"
-        >
-          <Typewriter options={{ strings: roles, autoStart: true, loop: true }} />
-        </motion.div>
+            {/* Roles */}
+            <motion.div
+              variants={fadeIn("down", 0.3)}
+              initial="hidden"
+              animate="show"
+              className="text-2xl font-semibold"
+            >
+              <Typewriter
+                options={{ strings: roles, autoStart: true, loop: true }}
+              />
+            </motion.div>
 
-        {/* Description */}
-        <motion.p
-          variants={fadeIn("down", 0.6)}
-          initial="hidden"
-          animate="show"
-          className="text-gray-300 max-w-xl mx-auto leading-relaxed"
-        >
-          A proactive computer science professional driven by a passion for leveraging technology to create meaningful impact.
-        </motion.p>
+            {/* Description */}
+            <motion.p
+              variants={fadeIn("down", 0.5)}
+              initial="hidden"
+              animate="show"
+              className="text-gray-300 leading-relaxed"
+            >
+              A proactive computer science professional driven by a passion for
+              leveraging technology to create meaningful impact.
+            </motion.p>
 
-        {/* Counters */}
-        <motion.div
-          variants={fadeIn("right", 0.9)}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-          ref={ref}
-          className="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-x-12 mt-6"
-        >
-          {/* Experience */}
-          <div className="flex items-center space-x-4">
-            <Briefcase className="w-6 h-6 text-blue-400" />
-            <div className="text-left">
-              <div className="text-2xl font-extrabold text-white">
-                {inView && <CountUp start={0} end={4} duration={3} />}+
+            {/* Counters */}
+            <motion.div
+              variants={fadeIn("right", 0.6)}
+              initial="hidden"
+              animate={inView ? "show" : "hidden"}
+              ref={ref}
+              className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center md:justify-start"
+            >
+              {/* Experience */}
+              <div className="flex items-center space-x-3">
+                <Briefcase className="w-6 h-6 text-blue-400" />
+                <div>
+                  <div className="text-2xl font-bold text-white">
+                    {inView && <CountUp start={0} end={4} duration={3} />}+
+                  </div>
+                  <div className="text-sm text-gray-300">Years Experience</div>
+                </div>
               </div>
-              <div className="text-sm text-gray-300">Years of Experience</div>
-            </div>
+
+              {/* Clients */}
+              <div className="flex items-center space-x-3">
+                <Users className="w-6 h-6 text-blue-400" />
+                <div>
+                  <div className="text-2xl font-bold text-white">
+                    {inView && <CountUp start={0} end={8} duration={3} />}+
+                  </div>
+                  <div className="text-sm text-gray-300">Happy Clients</div>
+                </div>
+              </div>
+
+              {/* Projects */}
+              <div className="flex items-center space-x-3">
+                <CheckCircle className="w-6 h-6 text-blue-400" />
+                <div>
+                  <div className="text-2xl font-bold text-white">
+                    {inView && <CountUp start={0} end={14} duration={3} />}+
+                  </div>
+                  <div className="text-sm text-gray-300">Projects Done</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div
+              variants={fadeIn("down", 0.9)}
+              initial="hidden"
+              animate="show"
+              className="flex space-x-5 justify-center md:justify-start pt-4"
+            >
+              <a
+                href="https://github.com/ThavinduLiyanage"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <GitHub className="w-5 h-5 text-white" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <Linkedin className="w-5 h-5 text-white" />
+              </a>
+              <a
+                href="mailto:thilinaThavinduLiyanage@gmail.com"
+                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <Mail className="w-5 h-5 text-white" />
+              </a>
+            </motion.div>
           </div>
 
-          {/* Clients */}
-          <div className="flex items-center space-x-4">
-            <Users className="w-6 h-6 text-blue-400" />
-            <div className="text-left">
-              <div className="text-2xl font-extrabold text-white">
-                {inView && <CountUp start={0} end={8} duration={3} />}+
-              </div>
-              <div className="text-sm text-gray-300">Happy Clients</div>
-            </div>
-          </div>
-
-          {/* Projects */}
-          <div className="flex items-center space-x-4">
-            <CheckCircle className="w-6 h-6 text-blue-400" />
-            <div className="text-left">
-              <div className="text-2xl font-extrabold text-white">
-                {inView && <CountUp start={0} end={14} duration={3} />}+
-              </div>
-              <div className="text-sm text-gray-300">Completed Projects</div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Social Icons */}
-        <motion.div
-          variants={fadeIn("down", 1.2)}
-          initial="hidden"
-          animate="show"
-          className="flex justify-center space-x-6 pt-6"
-        >
-          <a
-            href="https://github.com/ThavinduLiyanage"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
-            aria-label="GitHub"
+          {/* RIGHT SIDE - Image */}
+          <motion.div
+            variants={fadeIn("left", 0.5)}
+            initial="hidden"
+            animate="show"
+            className="mt-10 md:mt-0 md:ml-8"
           >
-            <GitHub className="w-6 h-6 text-white" />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
-            aria-label="LinkedIn"
-          >
-            <Linkedin className="w-6 h-6 text-white" />
-          </a>
-          <a
-            href="mailto:thilinaThavinduLiyanage@gmail.com"
-            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
-            aria-label="Email"
-          >
-            <Mail className="w-6 h-6 text-white" />
-          </a>
-        </motion.div>
+            <img
+              src="https://avatars.githubusercontent.com/u/111663219?v=4"
+              alt="Thavindu"
+              className="w-64 h-64 object-cover rounded-full border-4 border-blue-500 shadow-lg"
+            />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
