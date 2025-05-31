@@ -1,9 +1,7 @@
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { TypewriterEffectSmooth } from "./ui/typewriter-effect";
 import { motion } from "framer-motion";
-import TerminalTypewriter from "./ui/TerminalTypewriter"; 
-
+import TerminalTypewriter from "./ui/TerminalTypewriter";
 
 const skills = [
   "JavaScript",
@@ -21,7 +19,7 @@ const container = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.1, 
+      staggerChildren: 0.1,
     },
   },
 };
@@ -33,49 +31,36 @@ const item = {
 
 const headingVariants = {
   hidden: { x: 100, opacity: 0 },
-  show: { x: 0, opacity: 1, transition: { duration: 0.7, ease: "easeOut" } }
+  show: { x: 0, opacity: 1, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 export default function About() {
-  
-  const words = [
-    {
-      text: "Absolute",
-    },
-    {
-      text: "Coding",
-    },
-    {
-      text: "at",
-    },
-    {
-      text: "its",
-    },
-    {
-      text: "Finest.",
-      className: "text-blue-500 dark:text-blue-500",
-    },
-  ];
-
   return (
     <section id="about" className="py-20 bg-gray-50 dark:bg-[#092537]">
-      <div className="container mx-auto px-4" >
+      <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto text-center">
-          
+
+          {/* Static heading with blinking cursor */}
           <div className="mb-5 text-2xl md:text-base flex justify-center">
-            <TypewriterEffectSmooth words={words} />
+            <div className="font-mono text-lg md:text-xl text-gray-900 dark:text-white">
+              <span>Absolute Coding at its Finest.</span>
+              <span className="ml-1 animate-blink">|</span>
+            </div>
           </div>
+
+          {/* Terminal Typewriter */}
           <div className="mb-8 flex justify-center">
-  <TerminalTypewriter />
-</div>
-          <div className="w-20 mx-auto mb-6">
+            <TerminalTypewriter />
           </div>
+
         </div>
 
+        {/* Card and content section */}
         <div className="grid md:grid-cols-2 gap-12 items-center mt-5">
           <div className="relative w-3/4 mx-auto">
             <CardContainer className="inter-var">
               <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-[#0f172a] dark:border-white/[0.1] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
+                
                 {/* Header with avatar and name */}
                 <div className="flex items-center space-x-4">
                   <CardItem translateZ={20}>
@@ -86,27 +71,17 @@ export default function About() {
                     />
                   </CardItem>
                   <div>
-                    <CardItem
-                      translateZ={20}
-                      className="font-semibold text-neutral-800 dark:text-white"
-                    >
+                    <CardItem translateZ={20} className="font-semibold text-neutral-800 dark:text-white">
                       Thavindu Liyanage
                     </CardItem>
-                    <CardItem
-                      translateZ={20}
-                      className="text-sm text-neutral-500 dark:text-neutral-400"
-                    >
+                    <CardItem translateZ={20} className="text-sm text-neutral-500 dark:text-neutral-400">
                       @Thavindur_dev
                     </CardItem>
                   </div>
                 </div>
 
                 {/* Tweet content */}
-                <CardItem
-                  as="p"
-                  translateZ={40}
-                  className="text-neutral-700 dark:text-neutral-300 mt-4 text-sm"
-                >
+                <CardItem as="p" translateZ={40} className="text-neutral-700 dark:text-neutral-300 mt-4 text-sm">
                   Focused on the future, inspired by the view. 🚀💻 #WebDev #React #TechLife
                 </CardItem>
 
@@ -119,25 +94,19 @@ export default function About() {
                   />
                 </CardItem>
 
-                {/* Action buttons (icons only) */}
+                {/* Action buttons */}
                 <div className="flex justify-around items-center mt-6 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <CardItem translateZ={20} className="hover:text-blue-500 cursor-pointer">
-                    💬 Comment
-                  </CardItem>
-                  <CardItem translateZ={20} className="hover:text-green-500 cursor-pointer">
-                    🔁 Repost
-                  </CardItem>
-                  <CardItem translateZ={20} className="hover:text-pink-500 cursor-pointer">
-                    ❤️ Like
-                  </CardItem>
-                  <CardItem translateZ={20} className="hover:text-yellow-500 cursor-pointer">
-                    📌 Save
-                  </CardItem>
+                  <CardItem translateZ={20} className="hover:text-blue-500 cursor-pointer">💬 Comment</CardItem>
+                  <CardItem translateZ={20} className="hover:text-green-500 cursor-pointer">🔁 Repost</CardItem>
+                  <CardItem translateZ={20} className="hover:text-pink-500 cursor-pointer">❤️ Like</CardItem>
+                  <CardItem translateZ={20} className="hover:text-yellow-500 cursor-pointer">📌 Save</CardItem>
                 </div>
+
               </CardBody>
             </CardContainer>
           </div>
 
+          {/* About Text */}
           <div className="text-center md:text-left">
             <motion.h2
               variants={headingVariants}
@@ -148,12 +117,12 @@ export default function About() {
             >
               We can make it together
             </motion.h2>
-            
+
             <motion.p
-              initial={{ x: 100, opacity: 0 }}        
-              whileInView={{ x: 0, opacity: 1 }}      
+              initial={{ x: 100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true, amount: 0.5 }}   
+              viewport={{ once: true, amount: 0.5 }}
               className="text-gray-700 dark:text-gray-300 leading-relaxed"
             >
               I'm a passionate software engineer specializing in developing web and mobile
@@ -179,21 +148,14 @@ export default function About() {
               ))}
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
               viewport={{ once: true }}
               className="flex justify-center md:justify-start mt-6"
             >
-              <div className="bg-white dark:bg-gray-800/30 rounded-full p-1 shadow-md">
-                <a
-                  href="/Thavindu Liyanage.pdf"
-                  className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg inline-block hover:shadow-xl hover:scale-105"
-                >
-                  Download my CV
-                </a>
-              </div>
+              
             </motion.div>
           </div>
         </div>
