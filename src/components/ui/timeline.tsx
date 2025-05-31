@@ -42,7 +42,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   initial={{ x: -100, opacity: 0 }}
   whileInView={{ x: 0, opacity: 1 }}
   transition={{ duration: 0.6, ease: "easeOut" }}
-  viewport={{ once: true, amount: 0.5 }} // triggers when 50% visible, once only
+  viewport={{ once: true, amount: 0.5 }} 
   className="text-xl font-semibold md:text-4xl mb-4 text-black dark:text-white max-w-4xl"
 >
   Changelog from my journey

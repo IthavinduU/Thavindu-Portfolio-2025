@@ -1,230 +1,161 @@
-import { section } from 'framer-motion/client';
-import React from 'react';
-import { Timeline } from "@/components/ui/timeline";
+import { motion } from "framer-motion";
+import { Tooltip } from "react-tooltip";
+import {
+  SiMongodb,
+  SiDocker,
+  SiReact,
+  SiGoland,
+  SiPython,
+  SiNodedotjs,
+  SiPhp,
+  SiVuedotjs,
+  SiAmazonaws,
+  SiPostman,
+} from "react-icons/si";
+import { FaGraduationCap, FaUserTie, FaSchool } from "react-icons/fa";
+
+const Icon = ({ icon: IconComp, label }: { icon: any; label: string }) => (
+  <>
+    <motion.div
+      whileInView={{ rotate: 360 }}
+      transition={{ duration: 1.2 }}
+      className="text-2xl md:text-3xl text-blue-600 dark:text-blue-400"
+      data-tooltip-id={label}
+    >
+      <IconComp />
+    </motion.div>
+    <Tooltip id={label} content={label} place="top" />
+  </>
+);
+
+const Card = ({
+  title,
+  place,
+  duration,
+  details,
+  icons = [],
+  icon: HeadingIcon,
+}: {
+  title: string;
+  place: string;
+  duration: string;
+  details: string[];
+  icons?: { icon: any; label: string }[];
+  icon: any;
+}) => (
+  <motion.div
+    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0, y: 40 }}
+    transition={{ duration: 0.5 }}
+    className="bg-white dark:bg-[#123] shadow-md rounded-lg p-5 relative mb-10 border-l-4 border-blue-500"
+  >
+    <div className="absolute -left-[26px] top-3 bg-blue-500 text-white p-2 rounded-full">
+      <HeadingIcon className="text-xl" />
+    </div>
+    <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
+      {title}
+    </h4>
+    <p className="text-sm text-gray-600 dark:text-gray-300">{place}</p>
+    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{duration}</p>
+    <ul className="list-disc ml-5 text-sm text-gray-700 dark:text-gray-300">
+      {details.map((item, idx) => (
+        <li key={idx}>{item}</li>
+      ))}
+    </ul>
+    <div className="flex gap-3 mt-3">
+      {icons.map(({ icon, label }, idx) => (
+        <Icon key={idx} icon={icon} label={label} />
+      ))}
+    </div>
+  </motion.div>
+);
 
 const RoadMap = () => {
-  // Timeline data
-  const timelineData = [
+  const education = [
     {
-      title: "2024",
-      content: (
-        <div>
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-          Cloud & Advanced Tech
-          </h3>
-          
-          <h4 className="text-base font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
-          Cloud platforms and DevOps
-          </h4>
-          
-          <ul className="mb-6">
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Docker, Kubernetes
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Mobile app development
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Cloud architecture and serverless solutions
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> CI/CD implementation and deployment automation
-            </li>
-          </ul>
-          
-          <div className="grid grid-cols-2 gap-4">
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" />
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original-wordmark.svg" />
-          
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-plain-wordmark.svg" />
-          
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg" />
-          
-          </div>
-        </div>
-      ),
+      title: "BSc. (Hons) Computer Science",
+      place: "University of Westminster -  United Kingdom",
+      duration: "2021 - 2025",
+      details: [
+        "Major in Backend Development",
+        "Final Year Research Project: AI-based Student Monitoring System",
+      ],
+      icon: FaGraduationCap,
     },
     {
-      title: "2023",
-      content: (
-        <div>
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-          Full-Stack Development
-          </h3>
-          
-          <h4 className="text-base font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
-          Mastering advanced modern web and backend development frameworks and techniques for building scalable, high-performance applications
-          </h4>
-          
-          <ul className="mb-6">
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Mastered React ecosystem and state management
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Built responsive and accessible web applications
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Learned advanced CSS techniques and UI libraries
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Developed backend skills with Node.js and Express
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Implemented authentication and API integration
-            </li>
-          </ul>
-          
-          <div className="grid grid-cols-2 gap-4">
-          <img className="w-20 h-20"  src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" />
-            
-          
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" />
-          
-          
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-plain-wordmark.svg" />
-          
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original-wordmark.svg" />
-          
-          </div>
-        </div>
-      ),
+      title: "BSc.(Hons) Physical Science (On Hold)",
+      place: "South Eastern University - Sri Lanka",
+      duration: "2022 - 2026",
+      details: ["Major in Computer Engineering"],
+      icon: FaGraduationCap,
     },
     {
-      title: "Mid 2022",
-      content: (
-        <div>
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-          Data Structures & Algorithms
-          </h3>
-          
-          <h4 className="text-base font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
-          Frameworks and version control
-          </h4>
-          
-          <ul className="mb-6">
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Learning complex algorithms and data structures
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Problem-solving and optimizations
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Introduction to web frameworks
-            </li>
-          </ul>
-          
-          <div className="grid grid-cols-2 gap-4">
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" />
-          
-            
-          
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tomcat/tomcat-original.svg" />
-          
-          
-          
-          
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/hibernate/hibernate-plain-wordmark.svg" />
-          
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" />
-          
-          
-          
-            
-            
-          </div>
-        </div>
-      ),
+      title: "G.C.E. Advanced Level (Physical Science Stream)",
+      place: "Kingswood College - Kandy",
+      duration: "2007 - 2020",
+      details: [
+        "Completed GCE Advanced Levels in physical science stream with 3 passes",
+      ],
+      icon: FaSchool,
+    },
+  ];
+
+  const experience = [
+    {
+      title: "Software Engineering Intern",
+      place: "Petvisor - United Kingdom",
+      duration: "June 2023 - June 2024",
+      details: [
+        "Worked on a real-time appointment booking system running on a PHP(Phalcon) back-end and Vue front-end."
+      ],
+      icon: FaUserTie,
     },
     {
-      title: "Early 2022",
-      content: (
-        <div>
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-          Started Software Engineering path
-          </h3>
-          
-          <h4 className="text-base font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
-            Programming Fundamentals & Database Introduction
-          </h4>
-          
-          <ul className="mb-6">
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Java programming and OOP concepts
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> SQL queries and MySQL basics
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Database design and normalization
-            </li>
-          </ul>
-          
-          <div className="grid grid-cols-2 gap-4">
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original-wordmark.svg" />
-          
-            
-          
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" />
-          
-          
-            
-          <img className="w-20 h-20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" />
-          
-            
-          </div>
-        </div>
-      ),
+      title: "Freelance Developer",
+      place: "Upwork - Remote",
+      duration: "2020 - Present",
+      details: ["Delivering high-quality, streamlined software and web solutions tailored to diverse client requirements."],
+      icon: FaUserTie,
     },
     {
-      title: "2020",
-      content: (
-        <div>
-          <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-            AL ICT Stream (Foundations)
-          </h3>
-          
-          <h4 className="text-base font-semibold text-neutral-800 dark:text-neutral-100 mb-3">
-            ICT fundamentals and computer science basics
-          </h4>
-          
-          <ul className="mb-6">
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Computer basics (Hardware/Software, OS - Windows/Linux)
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Networking (IP addresses, LAN/WAN, IoT basics)
-            </li>
-            <li className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300 mb-1">
-              <span className="text-teal-500">•</span> Programming exposure (Basic HTML/CSS)
-            </li>
-          </ul>
-          
-          <div className="grid grid-cols-2 gap-4">
-          
-          </div>
-        </div>
-      ),
+      title: "Technical Writer",
+      place: "Medium",
+      duration: "2023 - Present",
+      details: ["Contributing to the community with the knowledge I pursue throughout my technical journey."],
+      icon: FaUserTie,
     },
   ];
 
   return (
-    <section id='roadmap' className='py-20 bg-gray-50 dark:bg-[#092537]'>
-      <div className='container mx-auto px-4'>
-      <h2 className="mb-12 text-center text-2xl font-bold text-gray-900 dark:text-gray-200 sm:text-5xl">
-      <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
-        My Journey
-      </span>
-    </h2>
-        <div className='max-w-5xl mx-auto'>
-          <div className="relative w-full overflow-clip">
-            <Timeline data={timelineData} />
+    <section id="roadmap" className="py-20 bg-gray-50 dark:bg-[#092537]">
+      <div className="container mx-auto px-4">
+        <h2 className="text-center text-4xl font-bold text-gray-800 dark:text-white mb-16">
+          <span className="bg-gradient-to-r from-blue-500 to-teal-500 text-transparent bg-clip-text">
+            My Journey Throughout the Years . . .
+          </span>
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Education Column */}
+          <div className="relative">
+            <h3 className="text-2xl font-semibold mb-8 text-gray-800 dark:text-white">
+              Education
+            </h3>
+            <div className="absolute left-3 top-10 h-full w-1 bg-blue-300 dark:bg-blue-600" />
+            {education.map((edu, idx) => (
+              <Card key={idx} {...edu} />
+            ))}
+          </div>
+
+          {/* Experience Column */}
+          <div className="relative">
+            <h3 className="text-2xl font-semibold mb-8 text-gray-800 dark:text-white">
+              Professional Experience
+            </h3>
+            <div className="absolute left-3 top-10 h-full w-1 bg-blue-300 dark:bg-blue-600" />
+            {experience.map((exp, idx) => (
+              <Card key={idx} {...exp} />
+            ))}
           </div>
         </div>
       </div>
