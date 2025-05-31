@@ -2,6 +2,8 @@ import React from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { TypewriterEffectSmooth } from "./ui/typewriter-effect";
 import { motion } from "framer-motion";
+import TerminalTypewriter from "./ui/TerminalTypewriter"; 
+
 
 const skills = [
   "JavaScript",
@@ -38,19 +40,19 @@ export default function About() {
   
   const words = [
     {
-      text: "Build",
+      text: "Absolute",
     },
     {
-      text: "awesome",
+      text: "Coding",
     },
     {
-      text: "apps",
+      text: "at",
     },
     {
-      text: "with",
+      text: "its",
     },
     {
-      text: "Me",
+      text: "Finest.",
       className: "text-blue-500 dark:text-blue-500",
     },
   ];
@@ -63,11 +65,9 @@ export default function About() {
           <div className="mb-5 text-2xl md:text-base flex justify-center">
             <TypewriterEffectSmooth words={words} />
           </div>
-          <div className="mb-5">
-            <p className="text-neutral-600 dark:text-neutral-200 text-xs sm:text-base">
-            Let's turn ideas into real-world apps
-            </p>
-          </div>
+          <div className="mb-8 flex justify-center">
+  <TerminalTypewriter />
+</div>
           <div className="w-20 mx-auto mb-6">
           </div>
         </div>
