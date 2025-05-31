@@ -1,103 +1,108 @@
-import React from 'react';
-import { Github as GitHub, Linkedin, Mail } from 'lucide-react';
-import { TypingAnimation } from "./ui/TypingAnimation.tsx";
-import { motion } from 'framer-motion';
+import React from "react";
+import { Github as GitHub, Linkedin, Mail } from "lucide-react";
+import { motion } from "framer-motion";
+import Typewriter from "typewriter-effect";
 
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.3,  // Delay for child elements
-    },
+const fadeIn = (direction = "up", delay = 0) => ({
+  hidden: {
+    opacity: 0,
+    y: direction === "up" ? 20 : -20,
   },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -50 },  // Start off from the left
   show: {
     opacity: 1,
-    x: 0,  // Move to original position
-    transition: { duration: 0.5, ease: 'easeOut' },
+    y: 0,
+    transition: {
+      delay,
+      duration: 0.6,
+      ease: "easeOut",
+    },
   },
-};
+});
 
+const roles = ["Software Engineer", "Web Developer", "Tech Enthusiast"];
 
 export default function Hero() {
   return (
-      <section
-          id="home"
-          className="min-h-screen flex items-center relative bg-cover bg-center"
-          style={{
-            backgroundImage: `url('https://raw.githubusercontent.com/ThavinduLiyanage/software/refs/heads/main/portfoliyocover.png')`,
-          }}
-      >
-        {/* Mobile Background Override */}
-        <div
-            className="absolute inset-0 bg-cover bg-center sm:hidden"
-            style={{
-              backgroundImage: `url('https://github.com/ThavinduLiyanage/software/blob/main/mobilecover1.png?raw=true')`,
-            }}
-        />
-
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/50" />
-
-        <div className="container mx-auto px-4 py-16 relative">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-left space-y-6 text-white">
-              <TypingAnimation
-                  className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent"
-                  duration={100}
-                  delay={500}
-                  startOnView={true}
-              >
-                Thavindu Liyanage
-              </TypingAnimation>
-
-              <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.3 }}
-      className="space-y-6"
+    <section
+      className="relative min-h-screen bg-cover bg-center flex items-center"
+      style={{
+        backgroundImage: `url('https://github.com/ThavinduLiyanage/software/raw/main/portfoliyocover.png')`,
+      }}
     >
-      <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl text-gray-200">
-        Software Engineer
-      </motion.h2>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/50" />
 
-      <motion.p variants={itemVariants} className="text-lg text-gray-300 leading-relaxed">
-        Passionate about creating innovative solutions through code.
-        Specializing in web development with modern technologies.
-      </motion.p>
+      <div className="container mx-auto px-4 relative z-10 max-w-4xl text-center text-white space-y-8 overflow-visible">
+        {/* Name with gradient */}
+        <motion.h1
+          variants={fadeIn("down", 0)}
+          initial="hidden"
+          animate="show"
+          className="text-4xl md:text-5xl font-extrabold leading-[1.2] bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent pb-2 overflow-visible"
+        >
+          Thavindu Liyanage
+        </motion.h1>
 
-      <motion.div variants={itemVariants} className="flex space-x-4">
-        <a
-          href="https://github.com/ThavinduLiyanage"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+        {/* Typewriter role titles */}
+        <motion.div
+          variants={fadeIn("down", 0.3)}
+          initial="hidden"
+          animate="show"
+          className="text-2xl font-semibold pb-2"
         >
-          <GitHub className="w-6 h-6 text-white" />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+          <Typewriter
+            options={{
+              strings: roles,
+              autoStart: true,
+              loop: true,
+            }}
+          />
+        </motion.div>
+
+        {/* Description */}
+        <motion.p
+          variants={fadeIn("down", 0.6)}
+          initial="hidden"
+          animate="show"
+          className="text-gray-300 max-w-xl mx-auto leading-relaxed pb-2"
         >
-          <Linkedin className="w-6 h-6 text-white" />
-        </a>
-        <a
-          href="mailto:thilinaThavinduLiyanage@gmail.com"
-          className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+          A proactive computer science professional driven by a passion for leveraging technology to create meaningful impact.
+        </motion.p>
+
+        {/* Social icons */}
+        <motion.div
+          variants={fadeIn("down", 0.9)}
+          initial="hidden"
+          animate="show"
+          className="flex justify-center space-x-6"
         >
-          <Mail className="w-6 h-6 text-white" />
-        </a>
-      </motion.div>
-    </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <a
+            href="https://github.com/ThavinduLiyanage"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            aria-label="GitHub"
+          >
+            <GitHub className="w-6 h-6 text-white" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            aria-label="LinkedIn"
+          >
+            <Linkedin className="w-6 h-6 text-white" />
+          </a>
+          <a
+            href="mailto:thilinaThavinduLiyanage@gmail.com"
+            className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            aria-label="Email"
+          >
+            <Mail className="w-6 h-6 text-white" />
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 }
