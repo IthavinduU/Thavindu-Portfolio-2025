@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { FaQuoteLeft } from "react-icons/fa";
 import parse from "html-react-parser";
 import dompurify from "dompurify";
 
-// 👇 Define type for Medium article
 interface MediumArticle {
   title: string;
   pubDate: string;
   description: string;
   link: string;
   thumbnail?: string;
+  categories?: string[];
 }
 
-// 👇 Extract first 5 sentences from description
 const getAbstract = (text: string): string => {
-  const sentences = text.split(".").slice(0, 5).join(".") + ".";
-  return sentences;
+  const words = text.split(/\s+/).slice(0, 50).join(" ");
+  return words + (words.length < text.length ? "…" : "");
 };
 
-// 👇 Sanitize HTML to prevent XSS
 const cleanHTML = (html: string): string => {
   return dompurify.sanitize(html, {
     ALLOWED_TAGS: ["p", "a", "strong", "em", "ul", "li"],
@@ -31,71 +27,98 @@ const cleanHTML = (html: string): string => {
   });
 };
 
+const fallbackImage = "https://via.placeholder.com/600x300?text=No+Image";
+
 export default function ArticlesSlider() {
   const [articles, setArticles] = useState<MediumArticle[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch(
+        const res = await fetch(
           "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@thavinduwrites"
         );
-        const data = await response.json();
+        const data = await res.json();
         setArticles(data.items || []);
-      } catch (error) {
-        console.error("Error fetching Medium articles:", error);
+      } catch (e) {
+        console.error("Error fetching articles", e);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchArticles();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <div className="w-72 h-96 bg-gray-300 animate-pulse rounded-xl"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="px-4 md:px-8 lg:px-16 py-4">
+    <div className="px-4 md:px-8 lg:px-16 py-6" style={{ height: "650px" }}>
       <Swiper
-        navigation={true}
+        direction="horizontal" // Explicitly set horizontal (default)
+        slidesPerView={1}
+        spaceBetween={30}
+        loop={true}
         pagination={{ clickable: true }}
         autoplay={{ delay: 7000, disableOnInteraction: false }}
-        speed={3000}
-        loop={true}
-        modules={[Navigation, Pagination, Autoplay]}
-        className="h-[300px] md:h-[400px]"
+        speed={800}
+        modules={[Pagination, Autoplay]}
+        style={{ height: "100%" }}
       >
-        {articles.map((article, index) => (
-          <SwiperSlide key={index}>
-            <div className="flex flex-col items-center md:flex-row gap-4 md:gap-x-8 h-full px-4 md:px-8 lg:px-16 py-4">
-              {/* Left - Title & Date */}
-              <div className="w-full max-w-[300px] flex flex-col xl:justify-center items-center relative mx-auto md:mx-0">
-                <div className="flex flex-col justify-center text-center">
-                  <div className="mb-2 mx-auto">
-                    {/* Optional: <img src={article.thumbnail} alt={article.title} /> */}
-                  </div>
-                  <div className="text-base md:text-lg px-1 font-semibold text-gray-900 dark:text-white">
+        {articles.map((article, idx) => (
+          <SwiperSlide key={idx}>
+            <div className="max-w-xl mx-auto rounded-xl border-4 border-gradient-to-tr from-purple-500 via-pink-500 to-red-500 p-1 shadow-lg bg-white dark:bg-gray-800 h-full flex flex-col">
+              <div className="rounded-lg overflow-hidden flex-shrink-0 h-48 md:h-56 w-full relative">
+                <img
+                  src={article.thumbnail || fallbackImage}
+                  alt={article.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4">
+                  <h3 className="text-white font-bold text-lg md:text-xl truncate">
                     {article.title}
-                  </div>
-                  <div className="text-[10px] md:text-[15px] uppercase font-extralight tracking-widest py-3 text-gray-500 dark:text-gray-300">
-                    {new Date(article.pubDate).toDateString()}
-                  </div>
+                  </h3>
+                  <p className="text-gray-300 text-xs mt-1 uppercase tracking-wide">
+                    {new Date(article.pubDate).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
               </div>
 
-              {/* Right - Description */}
-              <div className="flex-1 flex flex-col justify-center relative md:pl-8">
-                <div className="mb-4">
-                  <FaQuoteLeft className="text-2xl md:text-4xl xl:text-6xl text-gray-300 dark:text-gray-600 mx-auto md:mx-0" />
-                </div>
-                <div className="text-sm md:text-base xl:text-lg text-center md:text-left mb-4 text-gray-700 dark:text-gray-300">
-                  {parse(cleanHTML(getAbstract(article.description)))}
-                </div>
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline mt-4 inline-block"
-                >
-                  Read More
-                </a>
+              <div className="flex flex-wrap gap-2 mt-4 mb-3">
+                {(article.categories || []).slice(0, 3).map((tag, idx2) => (
+                  <span
+                    key={idx2}
+                    className="bg-purple-100 text-purple-800 dark:bg-purple-700 dark:text-purple-100 text-xs font-semibold px-2 py-1 rounded-full"
+                    title={`Category: ${tag}`}
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
+
+              <div className="text-gray-700 dark:text-gray-300 text-sm md:text-base flex-grow leading-relaxed mb-4 overflow-hidden">
+                {parse(cleanHTML(getAbstract(article.description)))}
+              </div>
+
+              <a
+                href={article.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-auto inline-block text-center bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-2 rounded-lg transition-shadow shadow-md hover:shadow-xl"
+              >
+                Read More
+              </a>
             </div>
           </SwiperSlide>
         ))}
