@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { motion } from "framer-motion";
 import TerminalTypewriter from "./ui/TerminalTypewriter";
@@ -35,6 +35,36 @@ const headingVariants = {
 };
 
 export default function About() {
+  const [githubStats, setGithubStats] = useState({
+    followers: 0,
+    public_repos: 0,
+    stars: 0,
+  });
+
+  useEffect(() => {
+    async function fetchGithubStats() {
+      try {
+        const userRes = await fetch("https://api.github.com/users/Thavindur_dev");
+        const userData = await userRes.json();
+
+        const reposRes = await fetch("https://api.github.com/users/Thavindur_dev/repos?per_page=100");
+        const reposData = await reposRes.json();
+
+        const totalStars = reposData.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+
+        setGithubStats({
+          followers: userData.followers,
+          public_repos: userData.public_repos,
+          stars: totalStars,
+        });
+      } catch (error) {
+        console.error("Failed to fetch GitHub stats:", error);
+      }
+    }
+
+    fetchGithubStats();
+  }, []);
+
   return (
     <section id="about" className="py-20 bg-gray-50 dark:bg-[#092537]">
       <div className="container mx-auto px-4">
@@ -102,6 +132,22 @@ export default function About() {
                   <CardItem translateZ={20} className="hover:text-yellow-500 cursor-pointer">📌 Save</CardItem>
                 </div>
 
+                {/* GitHub stats */}
+                <div className="flex justify-around items-center mt-4 text-neutral-700 dark:text-neutral-300 text-sm font-mono space-x-6">
+                  <div className="flex items-center space-x-1">
+                    <span>👥</span>
+                    <span>{githubStats.followers} Followers</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span>📂</span>
+                    <span>{githubStats.public_repos} Repos</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span>⭐️</span>
+                    <span>{githubStats.stars} Stars</span>
+                  </div>
+                </div>
+
               </CardBody>
             </CardContainer>
           </div>
@@ -155,7 +201,6 @@ export default function About() {
               viewport={{ once: true }}
               className="flex justify-center md:justify-start mt-6"
             >
-              
             </motion.div>
           </div>
         </div>

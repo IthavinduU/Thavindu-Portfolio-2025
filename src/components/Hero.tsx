@@ -4,6 +4,7 @@ import {
   Linkedin,
   Mail,
   Briefcase,
+  SignalMedium,
   Users,
   CheckCircle,
 } from "lucide-react";
