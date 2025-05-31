@@ -70,7 +70,7 @@ export default function Contact() {
         .then(() => {
           setStatus({ success: true, error: false });
           setFormData({ name: "", email: "", message: "" });
-          setTimeout(() => setStatus({ success: false, error: false }), 3000); // Reset status after 3s
+          setTimeout(() => setStatus({ success: false, error: false }), 3000); 
         })
         .catch((error) => {
           console.error("EmailJS Error:", error);
@@ -79,9 +79,9 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { icon: <Mail className="w-6 h-6" />, title: "Email", content: "thilinaThavinduLiyanage@gmail.com", link: "mailto:thilinaThavinduLiyanage@gmail.com" },
-    { icon: <Phone className="w-6 h-6" />, title: "Phone", content: "+94 761040031", link: "tel:+94 761040031" },
-    { icon: <MapPin className="w-6 h-6" />, title: "Location", content: "Colombo, Sri Lanka", link: "#" },
+    { icon: <Mail className="w-6 h-6" />, title: "Email", content: "thavindul@gmail.com", link: "mailto:thavindul@gmail.com" },
+    { icon: <Phone className="w-6 h-6" />, title: "Phone", content: "+94 77 969 1729", link: "tel:+94 779691729" },
+    { icon: <MapPin className="w-6 h-6" />, title: "Location", content: "Kandy, Sri Lanka", link: "https://maps.app.goo.gl/wwcHM2jMgULD1uXe9" },
   ];
 
   return (
@@ -94,8 +94,7 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent"
         >
-          Get In Touch
-        </motion.h2>
+Let me hear what you got        </motion.h2>
 
         <motion.div 
           variants={cardVariants}
