@@ -1,13 +1,11 @@
 import React from "react";
 import {
-  Github as GitHub,
-  Linkedin,
-  Mail,
-  Briefcase,
-  SignalMedium,
-  Users,
-  CheckCircle,
-} from "lucide-react";
+  FaGithub,
+  FaLinkedin,
+  FaMedium,
+} from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
+import { SiBuymeacoffee } from "react-icons/si";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
@@ -93,7 +91,21 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center md:justify-start"
             >
               <div className="flex items-center space-x-3">
-                <Briefcase className="w-6 h-6 text-blue-400" />
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12h6m-6 4h6m2 2a2 2 0 11-4 0 2 2 0 014 0zM5 6h14l1 9H4L5 6z"
+                  ></path>
+                </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
                     {inView ? <CountUp start={0} end={4} duration={3} /> : "0"}+
@@ -103,7 +115,21 @@ export default function Hero() {
               </div>
 
               <div className="flex items-center space-x-3">
-                <Users className="w-6 h-6 text-blue-400" />
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  ></path>
+                </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
                     {inView ? <CountUp start={0} end={8} duration={3} /> : "0"}+
@@ -113,11 +139,24 @@ export default function Hero() {
               </div>
 
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-blue-400" />
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12l2 2 4-4m1-3a9 9 0 11-7.446 14.32"
+                  ></path>
+                </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
-                    {inView ? <CountUp start={0} end={14} duration={3} /> : "0"}
-                    +
+                    {inView ? <CountUp start={0} end={14} duration={3} /> : "0"}+
                   </div>
                   <div className="text-sm text-gray-300">Projects Done</div>
                 </div>
@@ -135,23 +174,59 @@ export default function Hero() {
                 href="https://github.com/ThavinduLiyanage"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
                 className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
               >
-                <GitHub className="w-5 h-5 text-white" />
+                <FaGithub
+                  className="w-6 h-6"
+                  style={{ color: "#181717" }} // GitHub black
+                />
               </a>
               <a
                 href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn"
                 className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
               >
-                <Linkedin className="w-5 h-5 text-white" />
+                <FaLinkedin
+                  className="w-6 h-6"
+                  style={{ color: "#0A66C2" }} // LinkedIn blue
+                />
               </a>
               <a
                 href="mailto:thilinaThavinduLiyanage@gmail.com"
+                aria-label="Email"
                 className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
               >
-                <Mail className="w-5 h-5 text-white" />
+                <HiOutlineMail
+                  className="w-6 h-6"
+                  style={{ color: "#D14836" }} // Gmail red-ish
+                />
+              </a>
+              <a
+                href="https://medium.com/@ThavinduLiyanage"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Medium"
+                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <FaMedium
+                  className="w-6 h-6"
+                  style={{ color: "#00AB6C" }} // Medium green
+                />
+              </a>
+              <a
+                href="https://www.buymeacoffee.com/Thavindu"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Buy Me a Coffee"
+                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <SiBuymeacoffee
+                  className="w-6 h-6"
+                  style={{ color: "#FF813F" }} // Buy Me a Coffee orange
+                />
               </a>
             </motion.div>
 
@@ -190,7 +265,7 @@ export default function Hero() {
             className="mt-10 md:mt-0 md:ml-8 flex justify-center"
           >
             <img
-              src="https://avatars.githubusercontent.com/u/111663219?v=4"
+              src="hero.png"
               alt="Thavindu"
               className="w-64 h-64 object-cover rounded-full border-4 border-blue-500 shadow-lg transition-transform duration-300"
             />
