@@ -1,15 +1,10 @@
 import React from "react";
-import {
-  FaGithub,
-  FaLinkedin,
-  FaMedium,
-} from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaMedium } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { SiBuymeacoffee } from "react-icons/si";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
-import { useInView } from "react-intersection-observer";
 
 const fadeIn = (direction = "up", delay = 0) => ({
   hidden: {
@@ -30,11 +25,6 @@ const fadeIn = (direction = "up", delay = 0) => ({
 const roles = ["Software Engineer", "Web Developer", "Tech Enthusiast"];
 
 export default function Hero() {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.5,
-  });
-
   return (
     <section
       className="relative min-h-screen bg-cover bg-center flex items-center justify-center"
@@ -46,9 +36,14 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/50 z-0" />
 
       <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="flex flex-col md:flex-row items-center justify-between bg-black/60 backdrop-blur-lg rounded-xl p-8 md:p-12 shadow-xl">
-          {/* LEFT SIDE */}
-          <div className="text-white max-w-xl space-y-6 text-center md:text-left">
+        {/* 
+          Mobile responsiveness: 
+          - flex-col-reverse on small screens for image on top
+          - flex-row on md+ screens 
+        */}
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between bg-black/60 backdrop-blur-lg rounded-xl p-8 md:p-12 shadow-xl">
+          {/* LEFT SIDE - Text */}
+          <div className="text-white max-w-xl space-y-6 text-center md:text-left mt-8 md:mt-0">
             {/* Name */}
             <motion.h1
               variants={fadeIn("down", 0)}
@@ -82,14 +77,14 @@ export default function Hero() {
               leveraging technology to create meaningful impact.
             </motion.p>
 
-            {/* Counters */}
+            {/* Counters - always counting */}
             <motion.div
               variants={fadeIn("right", 0.6)}
               initial="hidden"
               animate="show"
-              ref={ref}
               className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center md:justify-start"
             >
+              {/* Years Experience */}
               <div className="flex items-center space-x-3">
                 <svg
                   className="w-6 h-6 text-blue-400"
@@ -108,12 +103,13 @@ export default function Hero() {
                 </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
-                    {inView ? <CountUp start={0} end={4} duration={3} /> : "0"}+
+                    <CountUp start={0} end={4} duration={3} />+
                   </div>
                   <div className="text-sm text-gray-300">Years Experience</div>
                 </div>
               </div>
 
+              {/* Happy Clients */}
               <div className="flex items-center space-x-3">
                 <svg
                   className="w-6 h-6 text-blue-400"
@@ -132,12 +128,13 @@ export default function Hero() {
                 </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
-                    {inView ? <CountUp start={0} end={8} duration={3} /> : "0"}+
+                    <CountUp start={0} end={8} duration={3} />+
                   </div>
                   <div className="text-sm text-gray-300">Happy Clients</div>
                 </div>
               </div>
 
+              {/* Projects Done */}
               <div className="flex items-center space-x-3">
                 <svg
                   className="w-6 h-6 text-blue-400"
@@ -156,7 +153,7 @@ export default function Hero() {
                 </svg>
                 <div>
                   <div className="text-2xl font-bold text-white">
-                    {inView ? <CountUp start={0} end={14} duration={3} /> : "0"}+
+                    <CountUp start={0} end={14} duration={3} />+
                   </div>
                   <div className="text-sm text-gray-300">Projects Done</div>
                 </div>
@@ -256,22 +253,62 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE - Image */}
+          {/* RIGHT SIDE - Image with scanning hover effect */}
           <motion.div
             variants={fadeIn("left", 0.6)}
             initial="hidden"
             animate="show"
             whileHover={{ scale: 1.05, rotate: 2 }}
-            className="mt-10 md:mt-0 md:ml-8 flex justify-center"
+            className="mt-10 md:mt-0 md:ml-8 flex justify-center relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg transition-transform duration-300"
           >
+            {/* Image */}
             <img
               src="hero.png"
               alt="Thavindu"
-              className="w-64 h-64 object-cover rounded-full border-4 border-blue-500 shadow-lg transition-transform duration-300"
+              className="w-full h-full object-cover rounded-full"
             />
+
+            {/* Scanning overlay */}
+            <div className="absolute inset-0 pointer-events-none rounded-full scanning-effect" />
           </motion.div>
         </div>
       </div>
+
+      {/* CSS for scanning effect */}
+      <style jsx>{`
+        .scanning-effect {
+          background: linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.25) 50%,
+            transparent 100%
+          );
+          animation: scan 2.5s linear infinite;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+        /* Show scanning effect only on hover */
+        div.relative:hover > .scanning-effect {
+          opacity: 1;
+        }
+
+        @keyframes scan {
+          0% {
+            transform: translateX(-100%) translateY(0);
+          }
+          100% {
+            transform: translateX(100%) translateY(0);
+          }
+        }
+
+        @media (max-width: 767px) {
+          /* Adjust container padding for mobile */
+          section > div > div {
+            padding-left: 1rem;
+            padding-right: 1rem;
+          }
+        }
+      `}</style>
     </section>
   );
 }
