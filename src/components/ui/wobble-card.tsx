@@ -33,19 +33,14 @@ export function WobbleCard({
         setIsHovering(false);
         setMousePosition({ x: 0, y: 0 });
       }}
-      className={cn(
-        "relative overflow-hidden rounded-2xl p-4",
-        containerClassName
-      )}
+      className={cn("relative overflow-hidden rounded-2xl p-4", containerClassName)}
+      style={{ perspective: "1000px" }}
     >
       <motion.div
-        className={cn(
-          "relative z-10 flex h-full w-full flex-col",
-          className
-        )}
+        className={cn("relative z-10 flex h-full w-full flex-col", className)}
         animate={{
-          rotateX: isHovering ? mousePosition.y * 10 : 0,
-          rotateY: isHovering ? mousePosition.x * 10 : 0,
+          rotateX: isHovering ? mousePosition.y * 6 : 0,
+          rotateY: isHovering ? mousePosition.x * 6 : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
@@ -60,4 +55,4 @@ export function WobbleCard({
       />
     </motion.div>
   );
-} 
+}
