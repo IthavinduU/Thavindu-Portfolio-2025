@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect, useRef } from "react";
 import {
   Navbar,
@@ -14,7 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 
-export default function Header() {
+export default function Header({ onArticlesClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -23,6 +22,7 @@ export default function Header() {
 
   const lastScrollTop = useRef(0);
 
+  // Notice we removed Articles from navItems because we want to handle it manually
   const navItems = [
     { name: "Home", link: "#home" },
     { name: "About", link: "#about" },
@@ -45,7 +45,7 @@ export default function Header() {
     document.documentElement.classList.toggle("dark", storedTheme === "dark");
   }, []);
 
-  // Scroll effects
+  // Scroll effects and active section detection
   useEffect(() => {
     const handleScroll = () => {
       const st = window.scrollY;
@@ -53,7 +53,6 @@ export default function Header() {
       setIsVisible(st < lastScrollTop.current || st < 10);
       lastScrollTop.current = st <= 0 ? 0 : st;
 
-      // Active section detection
       const sectionOffsets = navItems
         .map((item) => {
           const el = document.querySelector(item.link);
@@ -126,9 +125,12 @@ export default function Header() {
                 <NavbarButton variant="secondary" href="#contact">
                   Contact
                 </NavbarButton>
-                <NavbarButton variant="primary" href="#articles">
+
+                {/* Replace href with onClick */}
+                <NavbarButton variant="primary" onClick={onArticlesClick}>
                   Articles
                 </NavbarButton>
+
                 <button
                   onClick={toggleTheme}
                   className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -168,6 +170,7 @@ export default function Header() {
                     {item.name}
                   </a>
                 ))}
+
                 <div className="mt-4 flex flex-col gap-2">
                   <NavbarButton
                     variant="secondary"
@@ -176,13 +179,18 @@ export default function Header() {
                   >
                     Contact
                   </NavbarButton>
-                  <NavbarButton
-                    variant="primary"
-                    href="#articles"
-                    className="w-full"
+
+                  {/* Mobile Articles button */}
+                  <button
+                    onClick={() => {
+                      onArticlesClick();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full px-4 py-2 font-medium text-white bg-teal-600 rounded hover:bg-teal-700"
                   >
                     Articles
-                  </NavbarButton>
+                  </button>
+
                   <button
                     onClick={toggleTheme}
                     className="mt-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 self-center"

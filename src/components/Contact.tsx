@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import emailjs from "@emailjs/browser";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const containerVariants = {
   hidden: {},
@@ -17,7 +17,7 @@ const itemVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 
@@ -26,8 +26,8 @@ const titleVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: 'easeOut' }
-  }
+    transition: { duration: 0.7, ease: "easeOut" },
+  },
 };
 
 const cardVariants = {
@@ -35,8 +35,8 @@ const cardVariants = {
   show: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: 'easeOut' }
-  }
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 const contactItemVariants = {
@@ -44,12 +44,16 @@ const contactItemVariants = {
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: 'easeOut' }
-  }
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 export default function Contact() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [status, setStatus] = useState({ success: false, error: false });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -66,37 +70,53 @@ export default function Contact() {
     };
 
     emailjs
-        .send(serviceId, templateId, emailParams, publicKey)
-        .then(() => {
-          setStatus({ success: true, error: false });
-          setFormData({ name: "", email: "", message: "" });
-          setTimeout(() => setStatus({ success: false, error: false }), 3000); 
-        })
-        .catch((error) => {
-          console.error("EmailJS Error:", error);
-          setStatus({ success: false, error: true });
-        });
+      .send(serviceId, templateId, emailParams, publicKey)
+      .then(() => {
+        setStatus({ success: true, error: false });
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus({ success: false, error: false }), 3000);
+      })
+      .catch((error) => {
+        console.error("EmailJS Error:", error);
+        setStatus({ success: false, error: true });
+      });
   };
 
   const contactInfo = [
-    { icon: <Mail className="w-6 h-6" />, title: "Email", content: "thavindul@gmail.com", link: "mailto:thavindul@gmail.com" },
-    { icon: <Phone className="w-6 h-6" />, title: "Phone", content: "+94 77 969 1729", link: "tel:+94 779691729" },
-    { icon: <MapPin className="w-6 h-6" />, title: "Location", content: "Kandy, Sri Lanka", link: "https://maps.app.goo.gl/wwcHM2jMgULD1uXe9" },
+    {
+      icon: <Mail className="w-6 h-6" />,
+      title: "Email",
+      content: "thavindul@gmail.com",
+      link: "mailto:thavindul@gmail.com",
+    },
+    {
+      icon: <Phone className="w-6 h-6" />,
+      title: "Phone",
+      content: "+94 77 969 1729",
+      link: "tel:+94 779691729",
+    },
+    {
+      icon: <MapPin className="w-6 h-6" />,
+      title: "Location",
+      content: "Kandy, Sri Lanka",
+      link: "https://maps.app.goo.gl/wwcHM2jMgULD1uXe9",
+    },
   ];
 
   return (
     <section id="contact" className="py-20 bg-gray-50 dark:bg-[#092537]">
       <div className="container mx-auto px-4">
-        <motion.h2 
+        <motion.h2
           variants={titleVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent"
         >
-Let me hear what you got        </motion.h2>
+          Let me hear what you got{" "}
+        </motion.h2>
 
-        <motion.div 
+        <motion.div
           variants={cardVariants}
           initial="hidden"
           whileInView="show"
@@ -106,7 +126,7 @@ Let me hear what you got        </motion.h2>
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info Section */}
             <div className="space-y-8">
-              <motion.h3 
+              <motion.h3
                 variants={titleVariants}
                 initial="hidden"
                 whileInView="show"
@@ -115,7 +135,7 @@ Let me hear what you got        </motion.h2>
               >
                 Let's Connect
               </motion.h3>
-              
+
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -148,7 +168,7 @@ Let me hear what you got        </motion.h2>
             {/* Form Section */}
             <div className="relative">
               {status.success && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute -top-12 left-0 right-0 bg-green-500/10 text-green-600 dark:text-green-400 p-3 rounded-lg text-center"
@@ -157,7 +177,7 @@ Let me hear what you got        </motion.h2>
                 </motion.div>
               )}
               {status.error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute -top-12 left-0 right-0 bg-red-500/10 text-red-600 dark:text-red-400 p-3 rounded-lg text-center"
@@ -180,7 +200,9 @@ Let me hear what you got        </motion.h2>
                       id="name"
                       name="name"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       required
                       placeholder="Your Name"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-transparent dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300"
@@ -193,7 +215,9 @@ Let me hear what you got        </motion.h2>
                       id="email"
                       name="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       required
                       placeholder="Your Email"
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-transparent dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-300"
@@ -205,7 +229,9 @@ Let me hear what you got        </motion.h2>
                       id="message"
                       name="message"
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                       required
                       placeholder="Your Message"
                       rows={4}

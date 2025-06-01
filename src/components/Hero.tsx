@@ -68,7 +68,9 @@ export default function Hero() {
               animate="show"
               className="text-2xl font-semibold"
             >
-              <Typewriter options={{ strings: roles, autoStart: true, loop: true }} />
+              <Typewriter
+                options={{ strings: roles, autoStart: true, loop: true }}
+              />
             </motion.div>
 
             {/* Description */}
@@ -78,8 +80,8 @@ export default function Hero() {
               animate="show"
               className="text-gray-300 leading-relaxed"
             >
-              A proactive computer science professional driven by a passion for leveraging
-              technology to create meaningful impact.
+              A proactive computer science professional driven by a passion for
+              leveraging technology to create meaningful impact.
             </motion.p>
 
             {/* Counters */}
@@ -114,7 +116,8 @@ export default function Hero() {
                 <CheckCircle className="w-6 h-6 text-blue-400" />
                 <div>
                   <div className="text-2xl font-bold text-white">
-                    {inView ? <CountUp start={0} end={14} duration={3} /> : "0"}+
+                    {inView ? <CountUp start={0} end={14} duration={3} /> : "0"}
+                    +
                   </div>
                   <div className="text-sm text-gray-300">Projects Done</div>
                 </div>
@@ -166,7 +169,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05 }}
                 className="inline-block px-6 py-2 bg-blue-500 hover:bg-blue-600 rounded-md text-white font-semibold transition-shadow shadow-lg hover:shadow-xl"
               >
-                Download CV
+                View Resume{" "}
               </motion.a>
 
               <a

@@ -48,10 +48,15 @@ export default function About() {
         const userRes = await fetch(`https://api.github.com/users/${username}`);
         const userData = await userRes.json();
 
-        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+        const reposRes = await fetch(
+          `https://api.github.com/users/${username}/repos?per_page=100`
+        );
         const reposData = await reposRes.json();
 
-        const totalStars = reposData.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+        const totalStars = reposData.reduce(
+          (acc, repo) => acc + repo.stargazers_count,
+          0
+        );
 
         setGithubStats({
           followers: userData.followers,
@@ -84,62 +89,96 @@ export default function About() {
           </div>
         </div>
 
-        {/* Grid section */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mt-5">
+        {/* Grid Layout */}
+        <div className="grid md:grid-cols-2 gap-12 items-start mt-5">
+          {/* GitHub Stats & Visuals */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+            className="w-full flex flex-col items-center md:items-center space-y-6 px-4"
+          >
+            {/* Stats Block with Tooltips */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-white/[0.1] rounded-xl p-6 shadow-xl w-full max-w-md"
+            >
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center">
+                GitHub Stats
+              </h3>
+              <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 font-mono">
+                <div className="flex flex-col items-center" title="Total Followers on GitHub">
+                  <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                    {githubStats.followers}
+                  </span>
+                  <span>Followers</span>
+                </div>
+                <div className="flex flex-col items-center" title="Public repositories count">
+                  <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                    {githubStats.public_repos}
+                  </span>
+                  <span>Repos</span>
+                </div>
+                <div className="flex flex-col items-center" title="Total stars across all repos">
+                  <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                    {githubStats.stars}
+                  </span>
+                  <span>Stars</span>
+                </div>
+              </div>
+            </motion.div>
 
-        {/* GitHub Stats Section - Aligned + Smaller */}
-<div className="w-full flex flex-col items-center md:items-start space-y-4 px-4">
-  {/* GitHub Stats Block */}
-  <div className="bg-white dark:bg-[#0f172a] border border-gray-200 dark:border-white/[0.1] rounded-xl p-4 shadow w-full max-w-sm">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3 text-center md:text-left">
-      GitHub Stats
-    </h3>
-    <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 font-mono">
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
-          {githubStats.followers}
-        </span>
-        <span>Followers</span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
-          {githubStats.public_repos}
-        </span>
-        <span>Repos</span>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="text-xl font-bold text-teal-600 dark:text-teal-400">
-          {githubStats.stars}
-        </span>
-        <span>Stars</span>
-      </div>
-    </div>
-  </div>
+            {/* Animated GitHub Visuals */}
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="flex flex-col items-center gap-4 w-full max-w-md"
+            >
+              {[
+                {
+                  src: "https://github-readme-stats.vercel.app/api?username=IthavinduU&show_icons=true&theme=tokyonight&hide_title=true",
+                  alt: "GitHub Stats",
+                },
+                {
+                  src: "https://github-readme-stats.vercel.app/api/top-langs/?username=IthavinduU&layout=compact&theme=tokyonight",
+                  alt: "Top Languages",
+                },
+                {
+                  src: "https://github-readme-streak-stats.herokuapp.com/?user=IthavinduU&theme=tokyonight",
+                  alt: "GitHub Streak",
+                },
+              ].map(({ src, alt }, index) => (
+                <motion.img
+                  key={index}
+                  src={src}
+                  alt={alt}
+                  variants={item}
+                  className="rounded-xl shadow-md w-full"
+                />
+              ))}
+            </motion.div>
 
-  {/* GitHub Stats Image */}
-  <img
-    src="https://github-readme-stats.vercel.app/api?username=IthavinduU&show_icons=true&theme=tokyonight&hide_title=true"
-    alt="GitHub Stats"
-    className="rounded-xl shadow w-full max-w-sm"
-  />
+            {/* Contribution Graph / Trophy */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              viewport={{ once: true }}
+              className="w-full max-w-md"
+            >
+              <img
+                src="https://github-profile-trophy.vercel.app/?username=IthavinduU&theme=tokyonight&margin-w=10&no-bg=true"
+                alt="GitHub Trophies"
+                className="rounded-xl shadow-md w-full"
+              />
+            </motion.div>
+          </motion.div>
 
-  {/* Top Languages */}
-  <img
-    src="https://github-readme-stats.vercel.app/api/top-langs/?username=IthavinduU&layout=compact&theme=tokyonight"
-    alt="Top Languages"
-    className="rounded-xl shadow w-full max-w-sm"
-  />
-
-  {/* GitHub Streak */}
-  <img
-    src="https://github-readme-streak-stats.herokuapp.com/?user=IthavinduU&theme=tokyonight"
-    alt="GitHub Streak"
-    className="rounded-xl shadow w-full max-w-sm"
-  />
-</div>
-
-
-          {/* About Text */}
+          {/* About Text & Skills */}
           <div className="text-center md:text-left">
             <motion.h2
               variants={headingVariants}
@@ -159,8 +198,8 @@ export default function About() {
               className="text-gray-700 dark:text-gray-300 leading-relaxed"
             >
               I'm a passionate software engineer specializing in developing web and mobile
-              applications. Proficient in JavaScript, React, Node.js,
-              and Python, I enjoy solving complex problems and building innovative solutions.
+              applications. Proficient in JavaScript, React, Node.js, and Python, I enjoy solving
+              complex problems and building innovative solutions.
             </motion.p>
 
             <motion.div
