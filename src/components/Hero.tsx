@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import { FaGithub, FaLinkedin, FaMedium } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
@@ -5,15 +7,19 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 const fadeIn = (direction = "up", delay = 0) => ({
   hidden: {
     opacity: 0,
-    y: direction === "up" ? 20 : -20,
+    y: direction === "up" ? 20 : direction === "down" ? -20 : 0,
+    x: direction === "left" ? 20 : direction === "right" ? -20 : 0,
   },
   show: {
     opacity: 1,
     y: 0,
+    x: 0,
     transition: {
       delay,
       duration: 0.6,
@@ -25,19 +31,45 @@ const fadeIn = (direction = "up", delay = 0) => ({
 const roles = ["Software Engineer", "Web Developer", "Tech Enthusiast"];
 
 export default function Hero() {
+  const particlesInit = async (main: any) => {
+    await loadFull(main);
+  };
+
   return (
-    <section
-      className="relative min-h-screen bg-cover bg-center flex items-center justify-center"
-      style={{
-        backgroundImage: `url('https://github.com/ThavinduLiyanage/software/raw/main/portfoliyocover.png')`,
-      }}
-    >
-      <div className="absolute inset-0 bg-black/50 z-0" />
+    <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+      {/* Particle Background */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          fullScreen: { enable: false },
+          background: { color: "#000" },
+          fpsLimit: 60,
+          interactivity: {
+            events: { onHover: { enable: true, mode: "repulse" }, resize: true },
+            modes: { repulse: { distance: 100, duration: 0.4 } },
+          },
+          particles: {
+            number: { value: 60, density: { enable: true, area: 800 } },
+            color: { value: "#ffffff" },
+            shape: { type: "circle" },
+            opacity: { value: 0.4 },
+            size: { value: { min: 1, max: 4 } },
+            move: { enable: true, speed: 1, outModes: "bounce" },
+          },
+          detectRetina: true,
+        }}
+        className="absolute inset-0 z-0"
+      />
+
+      {/* Overlay to dim particle background */}
+      <div className="absolute inset-0 bg-black/60 z-0" />
+
+      {/* Hero Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
         <div className="flex flex-col-reverse md:flex-row items-center justify-between bg-black/60 backdrop-blur-lg rounded-xl p-6 md:p-12 shadow-xl">
           {/* LEFT SIDE */}
           <div className="text-white w-full max-w-xl space-y-6 text-center md:text-left mt-8 md:mt-0">
-            {/* Name */}
             <motion.h1
               variants={fadeIn("down", 0)}
               initial="hidden"
@@ -47,7 +79,6 @@ export default function Hero() {
               Thavindu Liyanage
             </motion.h1>
 
-            {/* Roles */}
             <motion.div
               variants={fadeIn("down", 0.3)}
               initial="hidden"
@@ -57,25 +88,21 @@ export default function Hero() {
               <Typewriter options={{ strings: roles, autoStart: true, loop: true }} />
             </motion.div>
 
-            {/* Description */}
             <motion.p
               variants={fadeIn("down", 0.5)}
               initial="hidden"
               animate="show"
               className="text-gray-300 leading-relaxed"
             >
-              A proactive computer science professional driven by a passion for
-              leveraging technology to create meaningful impact.
+              A proactive computer science professional driven by a passion for leveraging technology to create meaningful impact.
             </motion.p>
 
-            {/* Counters */}
             <motion.div
               variants={fadeIn("right", 0.6)}
               initial="hidden"
               animate="show"
               className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left"
             >
-              {/* Counter Item */}
               {[
                 {
                   label: "Years Experience",
@@ -117,7 +144,6 @@ export default function Hero() {
               ))}
             </motion.div>
 
-            {/* Socials */}
             <motion.div
               variants={fadeIn("down", 0.9)}
               initial="hidden"
@@ -141,7 +167,6 @@ export default function Hero() {
               </a>
             </motion.div>
 
-            {/* Buttons */}
             <motion.div
               variants={fadeIn("up", 1)}
               initial="hidden"
@@ -174,17 +199,13 @@ export default function Hero() {
             whileHover={{ scale: 1.05, rotate: 2 }}
             className="mt-10 md:mt-0 md:ml-8 flex justify-center relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg transition-transform duration-300"
           >
-            <img
-              src="hero.png"
-              alt="Thavindu"
-              className="w-full h-full object-cover rounded-full"
-            />
+            <img src="hero.png" alt="Thavindu" className="w-full h-full object-cover rounded-full" />
             <div className="absolute inset-0 pointer-events-none rounded-full scanning-effect" />
           </motion.div>
         </div>
       </div>
 
-      {/* Scanning Animation CSS */}
+      {/* Scanning animation */}
       <style jsx>{`
         .scanning-effect {
           background: linear-gradient(
