@@ -240,8 +240,8 @@ export const NavbarLogo = () => {
         src="icon.png"
         className="rounded-full"
         alt="logo"
-        width={30}
-        height={30}
+        width={60}
+        height={40}
       />
       <span className="font-medium text-black dark:text-white"></span>
     </a>
