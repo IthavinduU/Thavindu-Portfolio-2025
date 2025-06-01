@@ -1,139 +1,184 @@
-import React from 'react';
-import { ExternalLink, Github, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { WobbleCard } from './ui/wobble-card';
-import { cn } from '../lib/utils';
+import React, { useState } from "react";
+import { ExternalLink, Github, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { WobbleCard } from "./ui/wobble-card";
+import { cn } from "../lib/utils";
 
-// Projects Information
+// Project data
 const projects = [
   {
-    title: 'Spotify clone',
+    title: "EmotiLive : Real Time Student Monitoring System",
     description:
-      'The frontend is built with React and TypeScript for scalability and type safety, styled with Tailwind CSS, and uses Zustand for state management and React Query for efficient API calls. The backend runs on Node.js and Express.js, with MongoDB (via Mongoose) as the database. It features Clerk for secure authentication and role management, supporting various API functionalities.',
-    technologies: ['React', 'Node.js', 'Express.js'],
-    github: 'https://github.com/ThavinduLiyanage/Spotify-clone-front-end.git',
-    image: 'https://spotifknowledge.com/wp-content/uploads/2024/06/ss3-1200x577.png',
-    web: 'https://spotifyremake.vercel.app',
+      "AI-powered classroom tool for monitoring student engagement & emotional state in real time.",
+    technologies: [
+      "Python",
+      "TensorFlow",
+      "ESRGAN",
+      "OpenCV",
+      "Flask",
+      "NextJS",
+      "MongoDB",
+    ],
+    github: "https://github.com/IthavinduU/EmotiLive--FS",
   },
   {
-    title: 'Crop Management System',
+    title: "Dice Maniacs: Android Game",
     description:
-      'Built a system to manage crop data efficiently using OOP concepts. Users can add, update, and delete crop details, with an interactive table for data visualization.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express.js'],
-    github: 'https://github.com/ThavinduLiyanage/Crop-Monitoring-System-React.git',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEZU2clm4hgRLLfvXV9GySFRMGRC47ZbIu5Q&s',
-    web: '#',
+      "A Dice Roller game mobile application built using Android Studio with Kotlin, featuring multiplayer mode.",
+    technologies: ["Kotlin", "Android Studio", "XML"],
+    github: "https://github.com/IthavinduU/Dice-Maniacs",
   },
   {
-    title: 'Salon booking system',
+    title: "Prettify : Face Enhancement Application",
     description:
-      'A full-featured salon booking system built using the MERN stack (MongoDB, Express.js, React, Node.js). It allows customers to browse services, check stylist availability, book appointments, and receive confirmations. Admins can manage bookings, staff schedules, and services through a secure dashboard.',
-    technologies: ['React', 'Firebase', 'OpenAI'],
-    github: 'https://github.com/ThavinduLiyanage/salon-client-website.git',
-    image: 'https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/salon.PNG?raw=true',
-    web: 'https://salonbooking-lemon.vercel.app/',
+      "A face beautification application focused on acne detection and removal using a deep CNN model and digital inpainting. With the integration of CI-CD Pipeline, building, testing and deployment has been automated.",
+    technologies: ["Python", "Dart/Flutter", "Firebase", "Docker", "Jenkins"],
+    github: "https://github.com/IthavinduU/Prettify",
   },
   {
-    title: 'Construction Marketplace',
+    title: "Custom-Color-Contrast-Checker",
     description:
-      "I've implemented a complete e-commerce solution for Brick.lk, modeled after Amazon but tailored specifically for Sri Lanka's construction market. The application features a responsive design with dedicated sections for browsing construction products, services, and suppliers.",
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express.js', 'Crypto.js'],
-    github: 'https://github.com/ThavinduLiyanage/Brick.lk-E-commerce-Website.git',
-    image: 'https://github.com/ThavinduLiyanage/Portfolio_React/blob/main/src/assets/brick.PNG?raw=true',
-    web: 'https://bricklk.vercel.app/',
+      "A Node.js package designed to check the contrast ratio between two colors and verify their compliance with WCAG accessibility standards. Supports hex, rgb(), rgba(), CLI and JS API.",
+    technologies: ["Python", "Node.js", "NPM", "HTML5"],
+    github: "https://github.com/IthavinduU/color-contrast-checker",
   },
 ];
 
-export default function Projects() {
+const Projects = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
+
   return (
-    <section id="projects" className="py-20 bg-gray-50 dark:bg-[#092537]">
+    <section id="projects" className="py-20 bg-gray-100 dark:bg-[#0A1F2E]">
       <div className="container mx-auto px-4">
-        {/* Section Title */}
+
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900 dark:text-white"
+          className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white"
         >
-          <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
+          <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
             Featured Projects
           </span>
         </motion.h2>
 
-        {/* Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              whileHover={{ scale: 1.02 }}
+              className="transition-transform"
+              onClick={() => setSelectedProject(project)}
             >
               <WobbleCard
                 containerClassName={cn(
-                  project.title === 'Spotify clone' || project.title === 'Construction Marketplace'
-                    ? 'col-span-1 md:col-span-2'
-                    : 'col-span-1',
-                  'bg-white dark:bg-gray-800/50 backdrop-blur-sm min-h-[300px] border border-gray-200 dark:border-gray-700/50 hover:border-teal-500/50 shadow-lg dark:shadow-xl hover:shadow-teal-500/20 dark:hover:shadow-teal-500/10 relative overflow-hidden'
+                  "bg-white dark:bg-[#112D3B] border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-md hover:shadow-xl cursor-pointer overflow-hidden"
                 )}
               >
-                {/* Background Image */}
-                <img
-                  src={project.image}
-                  alt={`${project.title} preview`}
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
-                  className="absolute inset-0 w-full h-full object-cover rounded-2xl z-0 opacity-20 pointer-events-none"
-                />
-
-                {/* Content */}
-                <div className="relative h-full flex flex-col z-10">
-                  <div className="max-w-xl bg-white/60 dark:bg-black/40 backdrop-blur-md p-4 rounded-xl">
-                    <h2 className="text-left text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                      {project.title}
-                    </h2>
-                    <p className="mt-2 text-left text-sm text-gray-700 dark:text-gray-300">
-                      {project.description}
+                <div className="relative z-10 p-6">
+                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    {project.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {project.description}
+                  </p>
+                  <div className="mt-4">
+                    <p className="text-sm font-semibold mb-2 text-gray-600 dark:text-gray-400">
+                      Technologies Used:
                     </p>
-
-                    <ul className="mt-3 flex flex-wrap gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <ul className="flex flex-wrap gap-2">
                       {project.technologies.map((tech, i) => (
-                        <li key={i} className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded-md">
+                        <li
+                          key={i}
+                          className="px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-900 dark:text-white rounded-md"
+                        >
                           {tech}
                         </li>
                       ))}
                     </ul>
-                  </div>
-
-                  <div className="mt-auto pt-4 flex items-center gap-2">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`Visit ${project.title} GitHub`}
-                      className="inline-flex items-center space-x-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-md transition-all duration-300 text-sm"
-                    >
-                      <Github className="w-4 h-4" />
-                      <span>Code</span>
-                    </a>
-                    <a
-                      href={project.web}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`Visit ${project.title} Website`}
-                      className="inline-flex items-center space-x-1 px-3 py-1.5 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-md transition-all duration-300 text-sm"
-                    >
-                      <span>See More</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
                   </div>
                 </div>
               </WobbleCard>
             </motion.div>
           ))}
         </div>
+
+        {/* Footer */}
+        <p className="mt-10 text-center text-base text-gray-600 dark:text-gray-400">
+          Want to see more? Check out my{" "}
+          <a
+            href="https://github.com/IthavinduU"
+            className="text-cyan-500 hover:underline"
+          >
+            GitHub
+          </a>
+        </p>
       </div>
+
+      {/* Modal for project preview */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              className="bg-white dark:bg-[#0B1F2E] max-w-lg w-full rounded-xl p-6 relative shadow-xl border dark:border-gray-700"
+              initial={{ scale: 0.9, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {selectedProject.title}
+              </h3>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                {selectedProject.description}
+              </p>
+              <div className="mb-4">
+                <p className="font-semibold text-gray-600 dark:text-gray-400 mb-1">
+                  Technologies:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.technologies.map((tech, i) => (
+                    <span
+                      key={i}
+                      className="text-xs px-2 py-1 bg-cyan-100 dark:bg-cyan-700 text-cyan-900 dark:text-white rounded"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <a
+                href={selectedProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-cyan-600 hover:underline"
+              >
+                <Github className="w-4 h-4" />
+                View on GitHub
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
-}
+};
+
+export default Projects;
