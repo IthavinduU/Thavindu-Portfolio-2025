@@ -2,36 +2,46 @@ import React, { useRef } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
-import Services from "./components/Services";
 import Projects from "./components/Projects";
+import RoadMap from "./components/RoadMap";
+import Services from "./components/Services";
 import Articles from "./components/Articles";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import RoadMap from "./components/RoadMap";
 
 function App() {
   React.useEffect(() => {
     document.documentElement.classList.add("dark");
   }, []);
 
-  // Ref for Articles section
+  // Refs for sections with scroll handlers
   const articlesRef = useRef(null);
+  const roadmapRef = useRef(null);
 
-  // Scroll handler to pass to Header
+  // Scroll handlers to pass to Header
   const scrollToArticles = () => {
     articlesRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToRoadMap = () => {
+    roadmapRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#092537] text-white">
-      {/* Pass scroll handler as prop */}
-      <Header onArticlesClick={scrollToArticles} />
+      <Header
+        onArticlesClick={scrollToArticles}
+        onRoadMapClick={scrollToRoadMap}
+      />
       <main>
-        <Hero />
+        <Hero />       {/* Home */}
         <About />
-        <Services />
-        <RoadMap />
         <Projects />
+        {/* Attach ref to RoadMap */}
+        <div ref={roadmapRef}>
+          <RoadMap />
+        </div>
+        <Services />
         {/* Attach ref to Articles */}
         <div ref={articlesRef}>
           <Articles />

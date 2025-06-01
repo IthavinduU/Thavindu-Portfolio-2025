@@ -6,7 +6,10 @@ function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4 md:px-8">
       {/* Header */}
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">
+                  <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
+
         Latest Articles
+      </span>
       </h1>
 
       {/* Card View Container */}

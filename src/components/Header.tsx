@@ -13,20 +13,21 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 
-export default function Header({ onArticlesClick }) {
+export default function Header({ onArticlesClick, onRoadMapClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState("Home");
   const [theme, setTheme] = useState("light");
 
   const lastScrollTop = useRef(0);
 
-  // Notice we removed Articles from navItems because we want to handle it manually
+  // Updated nav items, include RoadMap
   const navItems = [
     { name: "Home", link: "#home" },
     { name: "About", link: "#about" },
     { name: "Projects", link: "#projects" },
+    { name: "RoadMap", link: "#roadmap" }, // New item
     { name: "Services", link: "#services" },
   ];
 
@@ -53,6 +54,7 @@ export default function Header({ onArticlesClick }) {
       setIsVisible(st < lastScrollTop.current || st < 10);
       lastScrollTop.current = st <= 0 ? 0 : st;
 
+      // Active section detection
       const sectionOffsets = navItems
         .map((item) => {
           const el = document.querySelector(item.link);
@@ -73,7 +75,7 @@ export default function Header({ onArticlesClick }) {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navItems]);
 
   return (
     <AnimatePresence>
@@ -115,6 +117,13 @@ export default function Header({ onArticlesClick }) {
                         : "text-gray-700 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-300"
                     }`}
                     whileHover={{ scale: 1.05 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (item.name === "Articles") onArticlesClick?.();
+                      else if (item.name === "RoadMap") onRoadMapClick?.();
+                      else
+                        window.location.href = item.link; // fallback scroll
+                    }}
                   >
                     {item.name}
                   </motion.a>
@@ -122,15 +131,29 @@ export default function Header({ onArticlesClick }) {
               />
 
               <div className="flex items-center gap-2">
-                <NavbarButton variant="secondary" href="#contact">
+                <NavbarButton
+                  variant="secondary"
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.document.querySelector("#contact")?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }}
+                >
                   Contact
                 </NavbarButton>
-
-                {/* Replace href with onClick */}
-                <NavbarButton variant="primary" onClick={onArticlesClick}>
+                {/* Articles button with smooth scroll */}
+                <NavbarButton
+                  variant="primary"
+                  href="#articles"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onArticlesClick?.();
+                  }}
+                >
                   Articles
                 </NavbarButton>
-
                 <button
                   onClick={toggleTheme}
                   className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -165,32 +188,45 @@ export default function Header({ onArticlesClick }) {
                         ? "text-teal-600 dark:text-teal-400"
                         : "text-gray-800 dark:text-gray-200 hover:text-teal-500 dark:hover:text-teal-300"
                     }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      if (item.name === "Articles") onArticlesClick?.();
+                      else if (item.name === "RoadMap") onRoadMapClick?.();
+                      else
+                        window.location.href = item.link; // fallback scroll
+                    }}
                   >
                     {item.name}
                   </a>
                 ))}
-
                 <div className="mt-4 flex flex-col gap-2">
                   <NavbarButton
                     variant="secondary"
                     href="#contact"
                     className="w-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsMenuOpen(false);
+                      window.document.querySelector("#contact")?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }}
                   >
                     Contact
                   </NavbarButton>
-
-                  {/* Mobile Articles button */}
-                  <button
-                    onClick={() => {
-                      onArticlesClick();
+                  <NavbarButton
+                    variant="primary"
+                    href="#articles"
+                    className="w-full"
+                    onClick={(e) => {
+                      e.preventDefault();
                       setIsMenuOpen(false);
+                      onArticlesClick?.();
                     }}
-                    className="w-full px-4 py-2 font-medium text-white bg-teal-600 rounded hover:bg-teal-700"
                   >
                     Articles
-                  </button>
-
+                  </NavbarButton>
                   <button
                     onClick={toggleTheme}
                     className="mt-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 self-center"
