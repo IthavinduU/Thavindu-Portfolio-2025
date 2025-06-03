@@ -150,10 +150,10 @@ export default function Hero() {
               animate="show"
               className="flex flex-wrap justify-center md:justify-start gap-4 pt-4"
             >
-              <a href="https://github.com/ThavinduLiyanage" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+              <a href="https://github.com/IthavinduU" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
                 <FaGithub className="w-6 h-6" style={{ color: "#181717" }} />
               </a>
-              <a href="https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+              <a href="https://www.linkedin.com/in/thavinduliyanage" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
                 <FaLinkedin className="w-6 h-6" style={{ color: "#0A66C2" }} />
               </a>
               <a href="mailto:thilinaThavinduLiyanage@gmail.com" aria-label="Email" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
