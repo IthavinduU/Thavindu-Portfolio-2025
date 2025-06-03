@@ -18,31 +18,53 @@ export function WobbleCard({
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - left) / width - 0.5;
-    const y = (e.clientY - top) / height - 0.5;
+  const handleMove = (xPos: number, yPos: number, rect: DOMRect) => {
+    const x = (xPos - rect.left) / rect.width - 0.5;
+    const y = (yPos - rect.top) / rect.height - 0.5;
     setMousePosition({ x, y });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    handleMove(e.clientX, e.clientY, e.currentTarget.getBoundingClientRect());
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    handleMove(
+      touch.clientX,
+      touch.clientY,
+      e.currentTarget.getBoundingClientRect()
+    );
+    setIsHovering(true);
   };
 
   return (
     <motion.div
       onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
         setIsHovering(false);
         setMousePosition({ x: 0, y: 0 });
       }}
-      className={cn("relative overflow-hidden rounded-2xl p-4", containerClassName)}
-      style={{ perspective: "1000px" }}
+      onTouchEnd={() => {
+        setIsHovering(false);
+        setMousePosition({ x: 0, y: 0 });
+      }}
+      className={cn(
+        "relative overflow-hidden rounded-2xl p-4 will-change-transform",
+        containerClassName
+      )}
+      style={{ perspective: "1000px", transformStyle: "preserve-3d" }}
     >
       <motion.div
         className={cn("relative z-10 flex h-full w-full flex-col", className)}
         animate={{
           rotateX: isHovering ? mousePosition.y * 6 : 0,
           rotateY: isHovering ? mousePosition.x * 6 : 0,
+          scale: isHovering ? 1.015 : 1,
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        transition={{ type: "spring", stiffness: 200, damping: 18 }}
       >
         {children}
       </motion.div>

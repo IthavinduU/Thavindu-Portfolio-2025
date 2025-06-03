@@ -62,14 +62,14 @@ export default function Hero() {
         className="absolute inset-0 z-0"
       />
 
-      {/* Overlay to dim particle background */}
+      {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 z-0" />
 
       {/* Hero Content */}
       <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="flex flex-col-reverse md:flex-row items-center justify-between bg-black/60 backdrop-blur-lg rounded-xl p-6 md:p-12 shadow-xl">
-          {/* LEFT SIDE */}
-          <div className="text-white w-full max-w-xl space-y-6 text-center md:text-left mt-8 md:mt-0">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-8">
+          {/* Text Card */}
+          <div className="w-full md:w-1/2 bg-black/60 backdrop-blur-lg rounded-xl p-6 md:p-8 shadow-xl space-y-6 text-white text-center md:text-left">
             <motion.h1
               variants={fadeIn("down", 0)}
               initial="hidden"
@@ -191,21 +191,23 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE - Image */}
+          {/* Avatar Card */}
           <motion.div
             variants={fadeIn("left", 0.6)}
             initial="hidden"
             animate="show"
             whileHover={{ scale: 1.05, rotate: 2 }}
-            className="mt-10 md:mt-0 md:ml-8 flex justify-center relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg transition-transform duration-300"
+            className="w-full md:w-1/3 bg-black/60 backdrop-blur-lg rounded-xl p-4 shadow-xl flex justify-center"
           >
-            <img src="hero.png" alt="Thavindu" className="w-full h-full object-cover rounded-full" />
-            <div className="absolute inset-0 pointer-events-none rounded-full scanning-effect" />
+            <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+              <img src="hero.png" alt="Thavindu" className="w-full h-full object-cover rounded-full" />
+              <div className="absolute inset-0 pointer-events-none rounded-full scanning-effect" />
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Scanning animation */}
+      {/* Scanning Animation */}
       <style jsx>{`
         .scanning-effect {
           background: linear-gradient(
