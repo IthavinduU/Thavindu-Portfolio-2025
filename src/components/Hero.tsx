@@ -159,10 +159,10 @@ export default function Hero() {
               <a href="mailto:thilinaThavinduLiyanage@gmail.com" aria-label="Email" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
                 <HiOutlineMail className="w-6 h-6" style={{ color: "#D14836" }} />
               </a>
-              <a href="https://medium.com/@ThavinduLiyanage" target="_blank" rel="noopener noreferrer" aria-label="Medium" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+              <a href="https://medium.com/@thavinduwrites" target="_blank" rel="noopener noreferrer" aria-label="Medium" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
                 <FaMedium className="w-6 h-6" style={{ color: "#00AB6C" }} />
               </a>
-              <a href="https://www.buymeacoffee.com/Thavindu" target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
+              <a href="https://buymeacoffee.com/Odbb0q1cZY" target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee" className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition">
                 <SiBuymeacoffee className="w-6 h-6" style={{ color: "#FF813F" }} />
               </a>
             </motion.div>
