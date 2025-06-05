@@ -5,7 +5,7 @@ import { WobbleCard } from "./ui/wobble-card";
 import { cn } from "../lib/utils";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Projects data
+// Projects data with actual image URLs and lazy loading
 const projects = [
   {
     title: "EmotiLive : Real Time Student Monitoring System",
@@ -21,6 +21,8 @@ const projects = [
       "MongoDB",
     ],
     github: "https://github.com/IthavinduU/EmotiLive--FS",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Dice Maniacs: Android Game",
@@ -28,6 +30,8 @@ const projects = [
       "A Dice Roller game mobile application built using Android Studio with Kotlin, featuring multiplayer mode.",
     technologies: ["Kotlin", "Android Studio", "XML"],
     github: "https://github.com/IthavinduU/Dice-Maniacs",
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Prettify : Face Enhancement Application",
@@ -35,13 +39,17 @@ const projects = [
       "A face beautification application focused on acne detection and removal using a deep CNN model and digital inpainting. With the integration of CI-CD Pipeline, building, testing and deployment has been automated.",
     technologies: ["Python", "Dart/Flutter", "Firebase", "Docker", "Jenkins"],
     github: "https://github.com/IthavinduU/Prettify",
+    image:
+      "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Custom-Color-Contrast-Checker",
     description:
-      "custom-color-contrast-checker is a Node.js package designed to check the contrast ratio between two colors and verify their compliance with WCAG accessibility standards. The tool supports hex color codes, rgb() and rgba() formats, and offers both a JavaScript API and a command-line interface (CLI) for quick and easy checks.",
+      "Node.js package designed to check the contrast ratio between two colors and verify compliance with WCAG accessibility standards. Supports hex, rgb, rgba with JavaScript API and CLI.",
     technologies: ["Python", "Node.js", "NPM", "HTML5"],
     github: "https://github.com/IthavinduU/color-contrast-checker",
+    image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
   },
 ];
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,7 +83,7 @@ export default function Projects() {
           </motion.h2>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
             {projects.map((project, index) => (
               <motion.div
                 key={project.title}
@@ -91,10 +99,18 @@ export default function Projects() {
               >
                 <WobbleCard
                   containerClassName={cn(
-                    "h-full bg-white dark:bg-[#112D3B] border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+                    "h-full bg-white dark:bg-[#112D3B] border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col"
                   )}
                 >
-                  <div className="relative z-10 p-6 flex flex-col h-full justify-between">
+                  <img
+                    src={project.image}
+                    alt={`${project.title} preview`}
+                    loading="lazy"
+                    className="w-full h-48 object-cover rounded-t-2xl"
+                    decoding="async"
+                    importance="low"
+                  />
+                  <div className="relative z-10 p-6 flex flex-col flex-grow justify-between">
                     <div>
                       <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
                         {project.title}
@@ -131,19 +147,6 @@ export default function Projects() {
                         <Github className="w-4 h-4" />
                         View on Github
                       </a>
-
-                      {project.web && (
-                        <a
-                          href={project.web}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-cyan-100 dark:bg-cyan-700 hover:bg-cyan-200 dark:hover:bg-cyan-600 text-cyan-900 dark:text-white rounded-lg transition-all"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Visit
-                        </a>
-                      )}
                     </div>
                   </div>
                 </WobbleCard>
@@ -198,6 +201,16 @@ export default function Projects() {
               <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                 {selectedProject.title}
               </h3>
+
+              <img
+                src={selectedProject.image}
+                alt={`${selectedProject.title} large preview`}
+                loading="lazy"
+                className="rounded-lg w-full mb-6 object-cover max-h-64 mx-auto"
+                decoding="async"
+                importance="low"
+              />
+
               <p className="text-base md:text-lg text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
                 {selectedProject.description}
               </p>
@@ -223,31 +236,12 @@ export default function Projects() {
                   href={selectedProject.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-all"
                 >
                   <Github className="w-5 h-5" />
                   View on Github
                 </a>
-
-                {selectedProject.web && (
-                  <a
-                    href={selectedProject.web}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 text-sm bg-cyan-100 dark:bg-cyan-700 hover:bg-cyan-200 dark:hover:bg-cyan-600 text-cyan-900 dark:text-white rounded-lg transition-all"
-                  >
-                    <ExternalLink className="w-5 h-5" />
-                    Visit
-                  </a>
-                )}
               </div>
-
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="mt-6 w-full py-3 text-center bg-red-100 dark:bg-red-800 text-red-800 dark:text-white rounded-lg font-semibold hover:bg-red-200 dark:hover:bg-red-700 transition-colors"
-              >
-                Close
-              </button>
             </motion.div>
           </motion.div>
         )}
