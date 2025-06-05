@@ -71,9 +71,10 @@ export default function About() {
           viewport={{ once: true }}
           className="text-gray-700 dark:text-gray-300 text-center max-w-3xl mx-auto mb-8 leading-relaxed"
         >
-          I'm a passionate software engineer specializing in developing web and mobile applications.
-          Proficient in JavaScript, React, Node.js, and Python, I enjoy solving complex problems
-          and building innovative solutions.
+          I'm a passionate software engineer specializing in developing web and
+          mobile applications. Proficient in JavaScript, React, Node.js, and
+          Python, I enjoy solving complex problems and building innovative
+          solutions.
         </motion.p>
 
         {/* Skills */}
