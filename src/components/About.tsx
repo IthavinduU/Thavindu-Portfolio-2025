@@ -71,10 +71,9 @@ export default function About() {
           viewport={{ once: true }}
           className="text-gray-700 dark:text-gray-300 text-center max-w-3xl mx-auto mb-8 leading-relaxed"
         >
-          I'm a passionate software engineer specializing in developing web and
-          mobile applications. Proficient in JavaScript, React, Node.js, and
-          Python, I enjoy solving complex problems and building innovative
-          solutions.
+          I'm a passionate software engineer specializing in developing web and mobile applications.
+          Proficient in JavaScript, React, Node.js, and Python, I enjoy solving complex problems
+          and building innovative solutions.
         </motion.p>
 
         {/* Skills */}
@@ -109,9 +108,12 @@ export default function About() {
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
+              whileHover={{
+                scale: 1.03,
+                boxShadow: "0 0 20px rgba(0, 200, 255, 0.25)",
+              }}
               transition={{ duration: 0.3 }}
-              className="w-full max-w-[400px] h-[250px] rounded-xl overflow-hidden shadow-lg bg-white dark:bg-[#0f1c2e] border border-gray-200 dark:border-gray-700 p-3 flex items-center justify-center"
+              className="w-full max-w-[420px] aspect-[16/9] md:aspect-[5/3] rounded-2xl overflow-hidden shadow-xl bg-white dark:bg-[#0f1c2e] border border-gray-200 dark:border-gray-700 p-4 flex items-center justify-center"
             >
               <img
                 src={src}
