@@ -57,10 +57,10 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
       { name: "Home", link: "#home" },
       { name: "About", link: "#about" },
       { name: "Projects", link: "#projects" },
-      { name: "RoadMap", link: "#roadmap" },
+      { name: "Road Map", link: "#roadmap" },
       { name: "Services", link: "#services" },
-      { name: "Contact", link: "#contact" },
       { name: "Articles", link: "#articles" },
+      { name: "Contact", link: "#contact" },
     ],
     []
   );
