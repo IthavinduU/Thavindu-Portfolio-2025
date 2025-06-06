@@ -6,6 +6,7 @@ import { SiBuymeacoffee } from "react-icons/si";
 import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
+import { CheckCircle, Briefcase } from "lucide-react";
 
 const fadeIn = (direction = "up", delay = 0) => ({
   hidden: {
@@ -79,21 +80,7 @@ export default function Hero() {
                 {
                   label: "Years Experience",
                   value: 5,
-                  icon: (
-                    <svg
-                      className="w-6 h-6 text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M9 12h6m-6 4h6m2 2a2 2 0 11-4 0 2 2 0 014 0zM5 6h14l1 9H4L5 6z"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  ),
+                  icon: <Briefcase className="w-6 h-6 text-blue-400" />,
                 },
                 {
                   label: "Satisfied Clients",
@@ -117,21 +104,7 @@ export default function Hero() {
                 {
                   label: "Projects Completed",
                   value: 25,
-                  icon: (
-                    <svg
-                      className="w-6 h-6 text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M9 12l2 2 4-4m1-3a9 9 0 11-7.446 14.32"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  ),
+                  icon: <CheckCircle className="w-6 h-6 text-blue-400" />,
                 },
               ].map((item, index) => (
                 <div
