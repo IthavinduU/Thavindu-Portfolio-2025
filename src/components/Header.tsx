@@ -14,10 +14,8 @@ import {
   MobileNavMenu,
   MobileNavToggle,
   NavbarLogo,
-  NavbarButton,
 } from "./ui/resizable-navbar";
 import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Sun } from "lucide-react";
 
 // Utility function for smooth scrolling
 const smoothScrollToElement = (selector) => {
@@ -49,7 +47,6 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeSection, setActiveSection] = useState("Home");
-  const [theme, setTheme] = useState("light");
   const [isClient, setIsClient] = useState(false);
 
   const lastScrollTop = useRef(0);
@@ -62,28 +59,14 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
       { name: "Projects", link: "#projects" },
       { name: "RoadMap", link: "#roadmap" },
       { name: "Services", link: "#services" },
+      { name: "Contact", link: "#contact" },
+      { name: "Articles", link: "#articles" },
     ],
     []
   );
 
   // Memoized callbacks
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
-
-  const toggleTheme = useCallback(() => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-
-    // Safe localStorage usage
-    if (typeof window !== "undefined") {
-      try {
-        localStorage.setItem("theme", newTheme);
-      } catch (error) {
-        console.warn("Failed to save theme to localStorage:", error);
-      }
-    }
-
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  }, [theme]);
 
   // Handle navigation click
   const handleNavClick = useCallback(
@@ -94,6 +77,8 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
         onArticlesClick?.();
       } else if (item.name === "RoadMap") {
         onRoadMapClick?.();
+      } else if (item.name === "Contact") {
+        smoothScrollToElement("#contact");
       } else {
         smoothScrollToElement(item.link);
       }
@@ -111,6 +96,8 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
         onArticlesClick?.();
       } else if (item.name === "RoadMap") {
         onRoadMapClick?.();
+      } else if (item.name === "Contact") {
+        smoothScrollToElement("#contact");
       } else {
         smoothScrollToElement(item.link);
       }
@@ -123,23 +110,7 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
     setIsClient(true);
   }, []);
 
-  // Theme initialization
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const storedTheme = localStorage.getItem("theme") || "light";
-        setTheme(storedTheme);
-        document.documentElement.classList.toggle(
-          "dark",
-          storedTheme === "dark"
-        );
-      } catch (error) {
-        console.warn("Failed to load theme from localStorage:", error);
-        setTheme("light");
-      }
-    }
-  }, []);
-
+  // Throttled scroll handler
   const handleScroll = useCallback(
     throttle(() => {
       const st = window.scrollY;
@@ -147,6 +118,7 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
       setIsVisible(st < lastScrollTop.current || st < 10);
       lastScrollTop.current = st <= 0 ? 0 : st;
 
+      // Active section detection with error handling
       try {
         const sectionOffsets = navItems
           .map((item) => {
@@ -171,6 +143,7 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
     [navItems]
   ); // 16ms = ~60fps
 
+  // Scroll effects and active section detection
   useEffect(() => {
     if (!isClient) return;
 
@@ -178,6 +151,7 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll, isClient]);
 
+  // Don't render until client-side hydration is complete
   if (!isClient) {
     return null;
   }
@@ -233,42 +207,8 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                 )}
               />
 
-              <div className="flex items-center gap-2">
-                <NavbarButton
-                  variant="secondary"
-                  href="#contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    smoothScrollToElement("#contact");
-                  }}
-                  aria-label="Navigate to contact section"
-                >
-                  Contact
-                </NavbarButton>
-                <NavbarButton
-                  variant="primary"
-                  href="#articles"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onArticlesClick?.();
-                  }}
-                  aria-label="View articles"
-                >
-                  Articles
-                </NavbarButton>
-                <button
-                  onClick={toggleTheme}
-                  className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                  aria-label={`Switch to ${
-                    theme === "dark" ? "light" : "dark"
-                  } mode`}
-                >
-                  {theme === "dark" ? (
-                    <Sun className="w-4 h-4 text-yellow-400" />
-                  ) : (
-                    <Moon className="w-4 h-4 text-gray-800" />
-                  )}
-                </button>
+              <div className="flex items-center">
+                {/* Empty div to maintain layout balance */}
               </div>
             </NavBody>
 
@@ -306,50 +246,6 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                     {item.name}
                   </a>
                 ))}
-                <div className="mt-4 flex flex-col gap-2">
-                  <NavbarButton
-                    variant="secondary"
-                    href="#contact"
-                    className="w-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMenuOpen(false);
-                      smoothScrollToElement("#contact");
-                    }}
-                    aria-label="Navigate to contact section"
-                  >
-                    Contact
-                  </NavbarButton>
-                  <NavbarButton
-                    variant="primary"
-                    href="#articles"
-                    className="w-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMenuOpen(false);
-                      onArticlesClick?.();
-                    }}
-                    aria-label="View articles"
-                  >
-                    Articles
-                  </NavbarButton>
-                  <button
-                    onClick={() => {
-                      toggleTheme();
-                      setIsMenuOpen(false);
-                    }}
-                    className="mt-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 self-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                    aria-label={`Switch to ${
-                      theme === "dark" ? "light" : "dark"
-                    } mode`}
-                  >
-                    {theme === "dark" ? (
-                      <Sun className="w-5 h-5 text-yellow-400" />
-                    ) : (
-                      <Moon className="w-5 h-5 text-gray-800" />
-                    )}
-                  </button>
-                </div>
               </MobileNavMenu>
             </MobileNav>
           </Navbar>
