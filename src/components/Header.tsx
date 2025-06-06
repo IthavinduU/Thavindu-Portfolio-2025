@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   Navbar,
   NavBody,
@@ -13,69 +19,168 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 
+// Utility function for smooth scrolling
+const smoothScrollToElement = (selector) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+};
+
+// Throttle function for performance optimization
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function () {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
+
 export default function Header({ onArticlesClick, onRoadMapClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeSection, setActiveSection] = useState("Home");
   const [theme, setTheme] = useState("light");
+  const [isClient, setIsClient] = useState(false);
 
   const lastScrollTop = useRef(0);
 
-  // Updated nav items, include RoadMap
-  const navItems = [
-    { name: "Home", link: "#home" },
-    { name: "About", link: "#about" },
-    { name: "Projects", link: "#projects" },
-    { name: "RoadMap", link: "#roadmap" }, // New item
-    { name: "Services", link: "#services" },
-  ];
+  // Memoized nav items
+  const navItems = useMemo(
+    () => [
+      { name: "Home", link: "#home" },
+      { name: "About", link: "#about" },
+      { name: "Projects", link: "#projects" },
+      { name: "RoadMap", link: "#roadmap" },
+      { name: "Services", link: "#services" },
+    ],
+    []
+  );
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  // Memoized callbacks
+  const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
 
+    // Safe localStorage usage
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("theme", newTheme);
+      } catch (error) {
+        console.warn("Failed to save theme to localStorage:", error);
+      }
+    }
+
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  }, [theme]);
+
+  // Handle navigation click
+  const handleNavClick = useCallback(
+    (e, item) => {
+      e.preventDefault();
+
+      if (item.name === "Articles") {
+        onArticlesClick?.();
+      } else if (item.name === "RoadMap") {
+        onRoadMapClick?.();
+      } else {
+        smoothScrollToElement(item.link);
+      }
+    },
+    [onArticlesClick, onRoadMapClick]
+  );
+
+  // Handle mobile nav click
+  const handleMobileNavClick = useCallback(
+    (e, item) => {
+      e.preventDefault();
+      setIsMenuOpen(false);
+
+      if (item.name === "Articles") {
+        onArticlesClick?.();
+      } else if (item.name === "RoadMap") {
+        onRoadMapClick?.();
+      } else {
+        smoothScrollToElement(item.link);
+      }
+    },
+    [onArticlesClick, onRoadMapClick]
+  );
+
+  // Client-side hydration check
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "light";
-    setTheme(storedTheme);
-    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+    setIsClient(true);
   }, []);
 
-  // Scroll effects and active section detection
+  // Theme initialization
   useEffect(() => {
-    const handleScroll = () => {
+    if (typeof window !== "undefined") {
+      try {
+        const storedTheme = localStorage.getItem("theme") || "light";
+        setTheme(storedTheme);
+        document.documentElement.classList.toggle(
+          "dark",
+          storedTheme === "dark"
+        );
+      } catch (error) {
+        console.warn("Failed to load theme from localStorage:", error);
+        setTheme("light");
+      }
+    }
+  }, []);
+
+  const handleScroll = useCallback(
+    throttle(() => {
       const st = window.scrollY;
       setIsScrolled(st > 20);
       setIsVisible(st < lastScrollTop.current || st < 10);
       lastScrollTop.current = st <= 0 ? 0 : st;
 
-      // Active section detection
-      const sectionOffsets = navItems
-        .map((item) => {
-          const el = document.querySelector(item.link);
-          return el
-            ? {
-                name: item.name,
-                top: el.getBoundingClientRect().top + window.scrollY,
-              }
-            : null;
-        })
-        .filter(Boolean);
+      try {
+        const sectionOffsets = navItems
+          .map((item) => {
+            const el = document.querySelector(item.link);
+            return el
+              ? {
+                  name: item.name,
+                  top: el.getBoundingClientRect().top + window.scrollY,
+                }
+              : null;
+          })
+          .filter(Boolean);
 
-      const current = sectionOffsets.findLast(
-        (s) => window.scrollY + 120 >= s.top
-      );
-      if (current) setActiveSection(current.name);
-    };
+        const current = sectionOffsets.findLast(
+          (s) => window.scrollY + 120 >= s.top
+        );
+        if (current) setActiveSection(current.name);
+      } catch (error) {
+        console.warn("Error detecting active section:", error);
+      }
+    }, 16),
+    [navItems]
+  ); // 16ms = ~60fps
 
-    window.addEventListener("scroll", handleScroll);
+  useEffect(() => {
+    if (!isClient) return;
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [navItems]);
+  }, [handleScroll, isClient]);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -90,12 +195,12 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
           <Navbar
             className={`transition-all duration-300 ${
               isScrolled
-                ? "bg-white/70 dark:bg-[#0f172a]/80 shadow backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+                ? "bg-white/70 dark:bg-slate-900/80 shadow backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
                 : "bg-transparent"
             }`}
           >
             {/* Desktop */}
-            <NavBody visible={true} className="px-4">
+            <NavBody visible={isScrolled} className="px-4">
               <motion.div
                 initial={{ x: -30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -117,13 +222,11 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                         : "text-gray-700 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-300"
                     }`}
                     whileHover={{ scale: 1.05 }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (item.name === "Articles") onArticlesClick?.();
-                      else if (item.name === "RoadMap") onRoadMapClick?.();
-                      else
-                        window.location.href = item.link; // fallback scroll
-                    }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={(e) => handleNavClick(e, item)}
+                    aria-current={
+                      activeSection === item.name ? "page" : undefined
+                    }
                   >
                     {item.name}
                   </motion.a>
@@ -136,14 +239,12 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                   href="#contact"
                   onClick={(e) => {
                     e.preventDefault();
-                    window.document.querySelector("#contact")?.scrollIntoView({
-                      behavior: "smooth",
-                    });
+                    smoothScrollToElement("#contact");
                   }}
+                  aria-label="Navigate to contact section"
                 >
                   Contact
                 </NavbarButton>
-                {/* Articles button with smooth scroll */}
                 <NavbarButton
                   variant="primary"
                   href="#articles"
@@ -151,13 +252,16 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                     e.preventDefault();
                     onArticlesClick?.();
                   }}
+                  aria-label="View articles"
                 >
                   Articles
                 </NavbarButton>
                 <button
                   onClick={toggleTheme}
-                  className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  aria-label="Toggle Dark Mode"
+                  className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                  aria-label={`Switch to ${
+                    theme === "dark" ? "light" : "dark"
+                  } mode`}
                 >
                   {theme === "dark" ? (
                     <Sun className="w-4 h-4 text-yellow-400" />
@@ -169,10 +273,16 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
             </NavBody>
 
             {/* Mobile */}
-            <MobileNav visible={true}>
+            <MobileNav visible={isScrolled}>
               <MobileNavHeader>
                 <NavbarLogo />
-                <MobileNavToggle isOpen={isMenuOpen} onClick={toggleMenu} />
+                <MobileNavToggle
+                  isOpen={isMenuOpen}
+                  onClick={toggleMenu}
+                  aria-label={`${
+                    isMenuOpen ? "Close" : "Open"
+                  } navigation menu`}
+                />
               </MobileNavHeader>
 
               <MobileNavMenu
@@ -188,14 +298,10 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                         ? "text-teal-600 dark:text-teal-400"
                         : "text-gray-800 dark:text-gray-200 hover:text-teal-500 dark:hover:text-teal-300"
                     }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMenuOpen(false);
-                      if (item.name === "Articles") onArticlesClick?.();
-                      else if (item.name === "RoadMap") onRoadMapClick?.();
-                      else
-                        window.location.href = item.link; // fallback scroll
-                    }}
+                    onClick={(e) => handleMobileNavClick(e, item)}
+                    aria-current={
+                      activeSection === item.name ? "page" : undefined
+                    }
                   >
                     {item.name}
                   </a>
@@ -208,10 +314,9 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                     onClick={(e) => {
                       e.preventDefault();
                       setIsMenuOpen(false);
-                      window.document.querySelector("#contact")?.scrollIntoView({
-                        behavior: "smooth",
-                      });
+                      smoothScrollToElement("#contact");
                     }}
+                    aria-label="Navigate to contact section"
                   >
                     Contact
                   </NavbarButton>
@@ -224,13 +329,19 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
                       setIsMenuOpen(false);
                       onArticlesClick?.();
                     }}
+                    aria-label="View articles"
                   >
                     Articles
                   </NavbarButton>
                   <button
-                    onClick={toggleTheme}
-                    className="mt-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 self-center"
-                    aria-label="Toggle Dark Mode"
+                    onClick={() => {
+                      toggleTheme();
+                      setIsMenuOpen(false);
+                    }}
+                    className="mt-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 self-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                    aria-label={`Switch to ${
+                      theme === "dark" ? "light" : "dark"
+                    } mode`}
                   >
                     {theme === "dark" ? (
                       <Sun className="w-5 h-5 text-yellow-400" />

@@ -1,16 +1,19 @@
 "use client";
-import { cn } from "../../lib/utils";
-import { IconMenu2, IconX } from "@tabler/icons-react";
+import React, { useRef, useState, useCallback } from "react";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
-} from "motion/react";
+} from "framer-motion";
+import { Menu, X } from "lucide-react";
 
-import React, { useRef, useState } from "react";
+// Utility function for class name concatenation
+const cn = (...classes) => {
+  return classes.filter(Boolean).join(" ");
+};
 
-
+// Interface definitions (converted to PropTypes for runtime checking if needed)
 interface NavbarProps {
   children: React.ReactNode;
   className?: string;
@@ -29,6 +32,7 @@ interface NavItemsProps {
   }[];
   className?: string;
   onItemClick?: () => void;
+  renderItem?: (item: { name: string; link: string }) => React.ReactNode;
 }
 
 interface MobileNavProps {
@@ -49,6 +53,22 @@ interface MobileNavMenuProps {
   onClose: () => void;
 }
 
+interface MobileNavToggleProps {
+  isOpen: boolean;
+  onClick: () => void;
+  "aria-label"?: string;
+}
+
+interface NavbarButtonProps {
+  href?: string;
+  as?: React.ElementType;
+  children: React.ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "dark" | "gradient";
+  onClick?: (e: React.MouseEvent) => void;
+  "aria-label"?: string;
+}
+
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({
@@ -57,33 +77,34 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
   const [visible, setVisible] = useState<boolean>(false);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 100) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
-  });
+  const handleScrollChange = useCallback((latest: number) => {
+    setVisible(latest > 100);
+  }, []);
+
+  useMotionValueEvent(scrollY, "change", handleScrollChange);
 
   return (
     <motion.div
       ref={ref}
-      // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
-      className={cn("sticky inset-x-0 top-0 z-40 w-full", className)}
+      className={cn("fixed inset-x-0 top-0 z-40 w-full", className)}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
               child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
+              { visible }
             )
-          : child,
+          : child
       )}
     </motion.div>
   );
 };
 
-export const NavBody = ({ children, className, visible }: NavBodyProps) => {
+export const NavBody = ({
+  children,
+  className,
+  visible = false,
+}: NavBodyProps) => {
   return (
     <motion.div
       animate={{
@@ -91,8 +112,8 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "40%" : "100%",
-        y: visible ? 20 : 0,
+        width: visible ? "min(90%, 1200px)" : "100%",
+        y: visible ? 12 : 0,
       }}
       transition={{
         type: "spring",
@@ -100,12 +121,12 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         damping: 50,
       }}
       style={{
-        minWidth: "800px",
+        minWidth: "320px", // More reasonable minimum width
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-        visible && "bg-white/80 dark:bg-[#092537]",
-        className,
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+        visible && "bg-white/80 dark:bg-slate-900/80",
+        className
       )}
     >
       {children}
@@ -113,29 +134,51 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   );
 };
 
-export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
+export const NavItems = ({
+  items,
+  className,
+  onItemClick,
+  renderItem,
+}: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
+
+  const handleMouseLeave = useCallback(() => setHovered(null), []);
+  const handleMouseEnter = useCallback((idx: number) => setHovered(idx), []);
+
+  if (renderItem) {
+    return (
+      <motion.div
+        className={cn(
+          "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium lg:flex lg:space-x-2",
+          className
+        )}
+      >
+        {items.map((item) => renderItem(item))}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
-      onMouseLeave={() => setHovered(null)}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
-        className,
+        className
       )}
     >
       {items.map((item, idx) => (
         <a
-          onMouseEnter={() => setHovered(idx)}
+          onMouseEnter={() => handleMouseEnter(idx)}
           onClick={onItemClick}
-          className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
+          className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-100 transition-colors"
           key={`link-${idx}`}
           href={item.link}
         >
           {hovered === idx && (
             <motion.div
               layoutId="hovered"
-              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-[#315375]"
+              className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-slate-800"
+              transition={{ duration: 0.2 }}
             />
           )}
           <span className="relative z-20">{item.name}</span>
@@ -145,7 +188,11 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
   );
 };
 
-export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
+export const MobileNav = ({
+  children,
+  className,
+  visible = false,
+}: MobileNavProps) => {
   return (
     <motion.div
       animate={{
@@ -153,11 +200,11 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "90%" : "100%",
+        width: visible ? "95%" : "100%",
         paddingRight: visible ? "12px" : "0px",
         paddingLeft: visible ? "12px" : "0px",
-        borderRadius: visible ? "4px" : "2rem",
-        y: visible ? 20 : 0,
+        borderRadius: visible ? "12px" : "0px",
+        y: visible ? 12 : 0,
       }}
       transition={{
         type: "spring",
@@ -165,9 +212,9 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         damping: 50,
       }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-        visible && "bg-white/80 dark:bg-[#092537]",
-        className,
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-1rem)] flex-col items-center justify-between bg-transparent px-2 py-2 lg:hidden",
+        visible && "bg-white/80 dark:bg-slate-900/80",
+        className
       )}
     >
       {children}
@@ -182,8 +229,8 @@ export const MobileNavHeader = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-row items-center justify-between",
-        className,
+        "flex w-full flex-row items-center justify-between px-2",
+        className
       )}
     >
       {children}
@@ -197,20 +244,44 @@ export const MobileNavMenu = ({
   isOpen,
   onClose,
 }: MobileNavMenuProps) => {
+  // Close menu when clicking outside
+  const handleBackdropClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-[#092537]",
-            className,
-          )}
-        >
-          {children}
-        </motion.div>
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            onClick={handleBackdropClick}
+          />
+
+          {/* Menu */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className={cn(
+              "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-6 shadow-lg dark:bg-slate-900 mx-2",
+              "shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
+              className
+            )}
+          >
+            {children}
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
@@ -219,14 +290,20 @@ export const MobileNavMenu = ({
 export const MobileNavToggle = ({
   isOpen,
   onClick,
-}: {
-  isOpen: boolean;
-  onClick: () => void;
-}) => {
-  return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
-  ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+  "aria-label": ariaLabel,
+}: MobileNavToggleProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+      aria-label={ariaLabel || (isOpen ? "Close menu" : "Open menu")}
+    >
+      {isOpen ? (
+        <X className="w-6 h-6 text-black dark:text-white" />
+      ) : (
+        <Menu className="w-6 h-6 text-black dark:text-white" />
+      )}
+    </button>
   );
 };
 
@@ -234,16 +311,23 @@ export const NavbarLogo = () => {
   return (
     <a
       href="#"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded-md"
+      aria-label="Go to homepage"
     >
       <img
         src="icon.png"
-        className="rounded-full"
-        alt="logo"
-        width={60}
-        height={40}
+        className="rounded-full object-cover"
+        alt="Company logo"
+        width={50}
+        height={50}
+        onError={(e) => {
+          // Fallback if image fails to load
+          e.currentTarget.style.display = "none";
+        }}
       />
-      <span className="font-medium text-black dark:text-white"></span>
+      <span className="font-medium text-black dark:text-white">
+        {/* Add your company name here if needed */}
+      </span>
     </a>
   );
 };
@@ -254,33 +338,29 @@ export const NavbarButton = ({
   children,
   className,
   variant = "primary",
+  onClick,
+  "aria-label": ariaLabel,
   ...props
-}: {
-  href?: string;
-  as?: React.ElementType;
-  children: React.ReactNode;
-  className?: string;
-  variant?: "primary" | "secondary" | "dark" | "gradient";
-} & (
-  | React.ComponentPropsWithoutRef<"a">
-  | React.ComponentPropsWithoutRef<"button">
-)) => {
+}: NavbarButtonProps) => {
   const baseStyles =
-    "px-4 py-2 rounded-md  button bg-[#092537] text-white text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
+    "px-4 py-2 rounded-md text-sm font-medium relative cursor-pointer hover:-translate-y-0.5 transition-all duration-200 inline-block text-center focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2";
 
   const variantStyles = {
     primary:
-      "shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-    secondary: "bg-transparent shadow-none dark:text-white",
-    dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
+      "bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 shadow-lg hover:shadow-xl",
+    secondary:
+      "bg-transparent text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500",
+    dark: "bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl",
     gradient:
-      "bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
+      "bg-gradient-to-r from-teal-500 to-blue-600 text-white hover:from-teal-600 hover:to-blue-700 shadow-lg hover:shadow-xl",
   };
 
   return (
     <Tag
       href={href || undefined}
       className={cn(baseStyles, variantStyles[variant], className)}
+      onClick={onClick}
+      aria-label={ariaLabel}
       {...props}
     >
       {children}
