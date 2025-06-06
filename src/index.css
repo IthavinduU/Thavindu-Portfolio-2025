@@ -92,3 +92,8 @@ html {
   background: #6b21a8 !important; /* Tailwind purple-700 */
   opacity: 1 !important;
 }
+h1 {
+  line-height: 1.25 !important;
+  padding-bottom: 0.2rem;
+}
+

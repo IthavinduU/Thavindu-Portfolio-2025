@@ -9,7 +9,8 @@ export default {
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
-        gradient: 'gradient 3s ease infinite'
+        gradient: 'gradient 3s ease infinite',
+        scan: 'scan 2.5s linear infinite'
       },
       keyframes: {
         fadeIn: {
@@ -28,6 +29,14 @@ export default {
           },
           '50%': {
             'background-position': '100% 50%'
+          }
+        },
+        scan: {
+          '0%': {
+            transform: 'translateX(-100%)'
+          },
+          '100%': {
+            transform: 'translateX(100%)'
           }
         }
       },
