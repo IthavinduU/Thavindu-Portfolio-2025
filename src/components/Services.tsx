@@ -165,7 +165,7 @@ export default function Services() {
           </span>
         </span>
       </h2>
-      <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-12 max-w-xl text-center">
+      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed tracking-wide mb-10 max-w-2xl text-center">
         Specialized services designed to exceed your expectations.
         Precision-driven results crafted with affordable, transparent pricing
         and reliable timelines that ensure your project is delivered promptly,
