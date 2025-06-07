@@ -126,7 +126,13 @@ const RoadMap = () => {
         <h2 className="text-center text-4xl font-bold text-gray-800 dark:text-white mb-16">
           <span className="bg-gradient-to-r from-blue-500 to-teal-500 text-transparent bg-clip-text">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-              Road Map{" "}
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
+                <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
+                  <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                    Road Map{" "}
+                  </span>
+                </span>
+              </h2>
             </span>
           </span>
         </h2>

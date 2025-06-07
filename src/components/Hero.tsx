@@ -7,6 +7,9 @@ import { motion } from "framer-motion";
 import Typewriter from "typewriter-effect";
 import CountUp from "react-countup";
 import { CheckCircle, Briefcase } from "lucide-react";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { useCallback } from "react";
 
 const fadeIn = (direction = "up", delay = 0) => ({
   hidden: {
@@ -29,8 +32,53 @@ const fadeIn = (direction = "up", delay = 0) => ({
 const roles = ["Software Engineer", "Web Developer", "Tech Enthusiast"];
 
 export default function Hero() {
+  const particlesInit = useCallback(async (engine) => {
+    await loadFull(engine);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+      {/* Particle Background */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute inset-0 z-0"
+        options={{
+          background: { color: { value: "#000000" } },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "repulse" },
+              resize: true,
+            },
+            modes: { repulse: { distance: 100, duration: 0.4 } },
+          },
+          particles: {
+            color: { value: "#38bdf8" },
+            links: {
+              color: "#38bdf8",
+              distance: 120,
+              enable: true,
+              opacity: 0.3,
+              width: 1,
+            },
+            move: {
+              enable: true,
+              speed: 1.5,
+              outModes: { default: "bounce" },
+            },
+            number: {
+              value: 45,
+              density: { enable: true, area: 800 },
+            },
+            opacity: { value: 0.4 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 4 } },
+          },
+          detectRetina: true,
+        }}
+      />
+
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 z-0" />
 

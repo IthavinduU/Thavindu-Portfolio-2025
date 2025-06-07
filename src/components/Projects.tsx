@@ -77,9 +77,13 @@ export default function Projects() {
             transition={{ duration: 0.5 }}
             className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white"
           >
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-              Featured Projects
-            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
+              <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
+                <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                  Featured Projects
+                </span>
+              </span>
+            </h2>
           </motion.h2>
 
           {/* Projects Grid */}

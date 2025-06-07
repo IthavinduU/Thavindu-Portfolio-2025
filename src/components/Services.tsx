@@ -155,7 +155,7 @@ export default function Services() {
   return (
     <div
       id="services"
-      className="min-h-screen flex flex-col justify-center items-center p-6 bg-gray-50 dark:bg-[#092537]"
+      className="min-h-screen flex flex-col justify-center items-center p-6 bg-transparent relative z-0"
     >
       {/* Services Section */}
       <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
@@ -165,7 +165,7 @@ export default function Services() {
           </span>
         </span>
       </h2>
-      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed tracking-wide mb-10 max-w-2xl text-center">
+      <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed tracking-wide mb-10 max-w-2xl text-center relative z-10">
         Specialized services designed to exceed your expectations.
         Precision-driven results crafted with affordable, transparent pricing
         and reliable timelines that ensure your project is delivered promptly,
@@ -177,7 +177,7 @@ export default function Services() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
-        className="flex flex-wrap justify-center max-w-5xl gap-8"
+        className="flex flex-wrap justify-center max-w-5xl gap-8 relative z-10"
       >
         {services.map((service) => (
           <motion.a
@@ -203,7 +203,7 @@ export default function Services() {
       </motion.div>
 
       {/* Tools & Technologies Section */}
-      <div className="mt-24 w-full text-center">
+      <div className="mt-24 w-full text-center relative z-10">
         <h3 className="text-2xl md:text-3xl font-bold mb-10 text-gray-900 dark:text-white">
           <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
@@ -230,10 +230,13 @@ export default function Services() {
                   <motion.div
                     key={tech.name}
                     variants={cardVariants}
-                    className="flex flex-col items-center justify-center gap-2 p-4 w-24 h-24 sm:w-28 sm:h-28 rounded-xl border bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-teal-500 transition-all shadow-sm dark:shadow-md"
+                    className="flex flex-col items-center justify-center gap-2 p-4 w-24 h-24 sm:w-28 sm:h-28 rounded-xl border bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 hover:border-teal-500 transition-all shadow-md dark:shadow-lg"
+                    style={{ zIndex: 10 }}
                   >
-                    <div className="text-3xl">{tech.icon}</div>
-                    <span className="text-sm text-gray-800 dark:text-gray-200">
+                    <div className="text-3xl text-gray-900 dark:text-white">
+                      {tech.icon}
+                    </div>
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
                       {tech.name}
                     </span>
                   </motion.div>

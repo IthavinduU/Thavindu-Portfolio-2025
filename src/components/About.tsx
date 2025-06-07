@@ -39,7 +39,7 @@ const githubCards = [
 
 export default function About() {
   return (
-    <section id="about" className="py-20 bg-gray-50 dark:bg-[#092537]">
+    <section id="about" className="py-20 relative z-10">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Heading */}
         <motion.h2
@@ -60,7 +60,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-4"
+          className="text-center mb-4 text-white drop-shadow-md"
         >
           <TerminalTypewriter />
         </motion.div>
@@ -71,7 +71,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-gray-700 dark:text-gray-300 text-center max-w-3xl mx-auto mb-8 leading-relaxed"
+          className="text-white text-center max-w-3xl mx-auto mb-8 leading-relaxed drop-shadow-md"
         >
           I'm a passionate software engineer specializing in developing web and
           mobile applications. Proficient in JavaScript, React, Node.js, and
@@ -90,7 +90,7 @@ export default function About() {
           {skills.map((skill) => (
             <span
               key={skill}
-              className="px-4 py-2 rounded-full bg-teal-500/10 dark:bg-teal-500/5 text-teal-700 dark:text-teal-300 text-sm font-medium border border-teal-400"
+              className="px-4 py-2 rounded-full bg-teal-500/20 text-teal-300 text-sm font-medium border border-teal-600"
             >
               {skill}
             </span>
@@ -113,10 +113,11 @@ export default function About() {
               rel="noopener noreferrer"
               whileHover={{
                 scale: 1.03,
-                boxShadow: "0 0 20px rgba(0, 200, 255, 0.25)",
+                boxShadow: "0 0 20px rgba(0, 255, 255, 0.4)",
               }}
               transition={{ duration: 0.3 }}
-              className="w-full max-w-[420px] aspect-[16/9] md:aspect-[5/3] rounded-2xl overflow-hidden shadow-xl bg-white dark:bg-[#0f1c2e] border border-gray-200 dark:border-gray-700 p-4 flex items-center justify-center"
+              className="w-full max-w-[420px] aspect-[16/9] md:aspect-[5/3] rounded-2xl overflow-hidden
+                shadow-lg bg-[#0f1c2e] border border-[#234564] p-4 flex items-center justify-center"
             >
               <img
                 src={src}
