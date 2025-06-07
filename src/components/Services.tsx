@@ -160,7 +160,9 @@ export default function Services() {
       {/* Services Section */}
       <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
         <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
-          I Offer
+          <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            Services
+          </span>
         </span>
       </h2>
       <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-12 max-w-xl text-center">
@@ -204,7 +206,9 @@ export default function Services() {
       <div className="mt-24 w-full text-center">
         <h3 className="text-2xl md:text-3xl font-bold mb-10 text-gray-900 dark:text-white">
           <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
-            Tools & Technologies I Use
+            <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+              Tools & Technologies
+            </span>
           </span>
         </h3>
 

@@ -138,16 +138,16 @@ export default function Footer() {
             ></iframe>
           </motion.div>
 
-          
-
           {/* Copyright */}
           <motion.p
             className="text-sm text-gray-600 dark:text-gray-400 px-4 text-center"
             variants={copyrightVariants}
           >
-            All rights reserved © {new Date().getFullYear()} | Forged by{" "}
+            All rights reserved © {new Date().getFullYear()} | Built by{" "}
             <span className="text-teal-600 dark:text-teal-400 font-medium hover:text-teal-700 dark:hover:text-teal-300 transition-colors duration-300">
-              Thavindu Liyanage
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                Thavindu Liyanage
+              </span>
             </span>
           </motion.p>
         </motion.div>

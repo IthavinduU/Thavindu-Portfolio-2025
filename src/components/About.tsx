@@ -49,7 +49,9 @@ export default function About() {
           viewport={{ once: true }}
           className="text-center text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent"
         >
-          We can make it together
+          <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            We can make it together
+          </span>
         </motion.h2>
 
         {/* Terminal */}
@@ -71,9 +73,10 @@ export default function About() {
           viewport={{ once: true }}
           className="text-gray-700 dark:text-gray-300 text-center max-w-3xl mx-auto mb-8 leading-relaxed"
         >
-          I'm a passionate software engineer specializing in developing web and mobile applications.
-          Proficient in JavaScript, React, Node.js, and Python, I enjoy solving complex problems
-          and building innovative solutions.
+          I'm a passionate software engineer specializing in developing web and
+          mobile applications. Proficient in JavaScript, React, Node.js, and
+          Python, I enjoy solving complex problems and building innovative
+          solutions.
         </motion.p>
 
         {/* Skills */}

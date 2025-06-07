@@ -116,7 +116,7 @@ const RoadMap = () => {
       details: [
         "Contributing to the community with the knowledge I pursue throughout my technical journey.",
       ],
-      icon: FaPenNib, // Pen icon to represent writing
+      icon: FaPenNib,
     },
   ];
 
@@ -125,7 +125,9 @@ const RoadMap = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-center text-4xl font-bold text-gray-800 dark:text-white mb-16">
           <span className="bg-gradient-to-r from-blue-500 to-teal-500 text-transparent bg-clip-text">
-            My Journey Throughout the Years . . .
+            <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+              Road Map{" "}
+            </span>
           </span>
         </h2>
 

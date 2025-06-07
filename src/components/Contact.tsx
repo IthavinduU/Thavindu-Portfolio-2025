@@ -113,7 +113,9 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent"
         >
-          Let me hear what you got{" "}
+          <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            Let's Connect{" "}
+          </span>
         </motion.h2>
 
         <motion.div
@@ -133,7 +135,7 @@ export default function Contact() {
                 viewport={{ once: true }}
                 className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
               >
-                Let's Connect
+                Contact{" "}
               </motion.h3>
 
               <motion.div
