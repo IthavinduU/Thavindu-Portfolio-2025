@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Analytics } from "@vercel/analytics/react"; 
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -86,7 +87,8 @@ function App() {
               <Contact />
               <Footer />
             </main>
-            <Analytics /> {/* ✅ Added Vercel Analytics */}
+            <Analytics />
+            <SpeedInsights/> 
           </div>
         )}
       </AnimatePresence>
