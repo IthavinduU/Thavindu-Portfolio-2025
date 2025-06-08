@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { Analytics } from "@vercel/analytics/react"; 
 
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -18,7 +19,7 @@ function App() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
-    const timer = setTimeout(() => setLoading(false), 2000); // 2 sec
+    const timer = setTimeout(() => setLoading(false), 3000); 
     return () => clearTimeout(timer);
   }, []);
 
@@ -85,6 +86,7 @@ function App() {
               <Contact />
               <Footer />
             </main>
+            <Analytics /> {/* ✅ Added Vercel Analytics */}
           </div>
         )}
       </AnimatePresence>
