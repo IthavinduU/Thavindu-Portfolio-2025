@@ -57,7 +57,7 @@ export default function Hero() {
             color: { value: "#38bdf8" },
             links: {
               color: "#38bdf8",
-              distance: 300,
+              distance: 100,
               enable: true,
               opacity: 0.3,
               width: 4,
