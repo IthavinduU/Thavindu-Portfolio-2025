@@ -68,7 +68,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-50 dark:bg-[#092537] py-12 border-t border-gray-200 dark:border-gray-700/50 relative">
+    <footer className="bg-transparent py-12 border-t border-gray-200/30 dark:border-gray-700/30 relative">
       <div className="container mx-auto px-4">
         <motion.div
           className="flex flex-col items-center text-center"
@@ -80,7 +80,7 @@ export default function Footer() {
           {/* Logo/Brand */}
           <motion.a
             href="/"
-            className="text-xl md:text-2xl font-bold mb-6 text-gray-800 dark:text-white hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+            className="text-xl md:text-2xl font-bold mb-6 text-gray-900 dark:text-white drop-shadow-md hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
             variants={logoVariants}
           >
             thavindu.
@@ -103,7 +103,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.label}
-                  className="group flex items-center justify-center w-10 h-10 bg-gray-200 dark:bg-gray-700/50 rounded-full text-gray-600 dark:text-gray-400 hover:bg-teal-500/20 hover:text-teal-600 dark:hover:text-teal-300 transition-all duration-300"
+                  className="group flex items-center justify-center w-10 h-10 bg-gray-200/80 dark:bg-gray-700/60 rounded-full text-gray-700 dark:text-gray-300 hover:bg-teal-500/20 hover:text-teal-600 dark:hover:text-teal-300 transition-all duration-300 drop-shadow-sm"
                 >
                   <motion.span
                     className="group-hover:scale-110 transition-transform duration-300"
@@ -118,7 +118,6 @@ export default function Footer() {
           </motion.ul>
 
           {/* Map Location Embed */}
-          {/* Map Location Embed - Smaller Version */}
           <motion.div
             className="w-full max-w-2xl mb-10"
             initial={{ opacity: 0, y: 30 }}
@@ -130,17 +129,17 @@ export default function Footer() {
               title="My Location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d271.86963478290323!2d80.62798324714622!3d7.287091688842843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae369c6f9dcd711%3A0xca97089e2522d149!2sSupreme%20Catering%20%26%20Event%20items%2C%20Kandy!5e0!3m2!1sen!2slk!4v1748666726361!5m2!1sen!2slk"
               width="100%"
-              height="200" // Reduced height
+              height="200"
               allowFullScreen
               loading="lazy"
-              className="rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"
+              className="rounded-lg border border-gray-200/30 dark:border-gray-700/30 shadow-sm"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </motion.div>
 
           {/* Copyright */}
           <motion.p
-            className="text-sm text-gray-600 dark:text-gray-400 px-4 text-center"
+            className="text-sm text-gray-700 dark:text-gray-300 px-4 text-center drop-shadow-sm"
             variants={copyrightVariants}
           >
             All rights reserved © {new Date().getFullYear()} | Built by{" "}
@@ -159,7 +158,7 @@ export default function Footer() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="w-8 h-8 flex items-center justify-center rounded-full bg-transparent text-teal-600 dark:text-teal-400 border border-teal-500/50 hover:bg-teal-500/10 transition-colors duration-300"
+          className="w-8 h-8 flex items-center justify-center rounded-full bg-transparent text-teal-600 dark:text-teal-400 border border-teal-500/50 hover:bg-teal-500/10 transition-colors duration-300 drop-shadow"
           aria-label="Back to top"
         >
           ↑
