@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Navbar,
   NavBody,
@@ -15,43 +9,22 @@ import {
   MobileNavToggle,
   NavbarLogo,
 } from "./ui/resizable-navbar";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-// Utility function for smooth scrolling
+// Smooth scroll utility
 const smoothScrollToElement = (selector) => {
   const element = document.querySelector(selector);
   if (element) {
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-};
-
-// Throttle function for performance optimization
-const throttle = (func, limit) => {
-  let inThrottle;
-  return function () {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
 };
 
 export default function Header({ onArticlesClick, onRoadMapClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [activeSection, setActiveSection] = useState("Home");
   const [isClient, setIsClient] = useState(false);
 
-  const lastScrollTop = useRef(0);
-
-  // Memoized nav items
   const navItems = useMemo(
     () => [
       { name: "Home", link: "#home" },
@@ -65,60 +38,50 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
     []
   );
 
-  // Memoized callbacks
   const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
 
-  // Handle navigation click
   const handleNavClick = useCallback(
     (e, item) => {
       e.preventDefault();
-
-      if (item.name === "Articles") {
-        onArticlesClick?.();
-      } else if (item.name === "RoadMap") {
-        onRoadMapClick?.();
-      } else if (item.name === "Contact") {
-        smoothScrollToElement("#contact");
-      } else {
-        smoothScrollToElement(item.link);
-      }
+      if (item.name === "Articles") onArticlesClick?.();
+      else if (item.name === "Road Map") onRoadMapClick?.();
+      else smoothScrollToElement(item.link);
     },
     [onArticlesClick, onRoadMapClick]
   );
 
-  // Handle mobile nav click
   const handleMobileNavClick = useCallback(
     (e, item) => {
       e.preventDefault();
       setIsMenuOpen(false);
-
-      if (item.name === "Articles") {
-        onArticlesClick?.();
-      } else if (item.name === "RoadMap") {
-        onRoadMapClick?.();
-      } else if (item.name === "Contact") {
-        smoothScrollToElement("#contact");
-      } else {
-        smoothScrollToElement(item.link);
-      }
+      if (item.name === "Articles") onArticlesClick?.();
+      else if (item.name === "Road Map") onRoadMapClick?.();
+      else smoothScrollToElement(item.link);
     },
     [onArticlesClick, onRoadMapClick]
   );
 
-  // Client-side hydration check
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Throttled scroll handler
-  const handleScroll = useCallback(
-    throttle(() => {
-      const st = window.scrollY;
-      setIsScrolled(st > 20);
-      setIsVisible(st < lastScrollTop.current || st < 10);
-      lastScrollTop.current = st <= 0 ? 0 : st;
+  // Shrink effect on scroll
+  useEffect(() => {
+    if (!isClient) return;
 
-      // Active section detection with error handling
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isClient]);
+
+  // Active section detection
+  useEffect(() => {
+    if (!isClient) return;
+
+    const handleScroll = () => {
       try {
         const sectionOffsets = navItems
           .map((item) => {
@@ -139,118 +102,96 @@ export default function Header({ onArticlesClick, onRoadMapClick }) {
       } catch (error) {
         console.warn("Error detecting active section:", error);
       }
-    }, 16),
-    [navItems]
-  ); // 16ms = ~60fps
-
-  // Scroll effects and active section detection
-  useEffect(() => {
-    if (!isClient) return;
+    };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll, isClient]);
+  }, [navItems, isClient]);
 
-  // Don't render until client-side hydration is complete
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ y: -80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -80, opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="fixed top-0 w-full z-50"
-        >
-          <Navbar
-            className={`transition-all duration-300 ${
-              isScrolled
-                ? "bg-white/70 dark:bg-slate-900/80 shadow backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
-                : "bg-transparent"
-            }`}
+    <motion.div
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="fixed top-0 w-full z-50"
+    >
+      <Navbar
+        className={`transition-all duration-300 backdrop-blur-lg border-b ${
+          isScrolled
+            ? "bg-white/80 dark:bg-slate-900/80 shadow-md py-2 border-gray-200 dark:border-gray-800"
+            : "bg-white/40 dark:bg-slate-900/30 py-4 border-transparent"
+        }`}
+      >
+        {/* Desktop Nav */}
+        <NavBody visible className="px-4">
+          <motion.div
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
           >
-            {/* Desktop */}
-            <NavBody visible={isScrolled} className="px-4">
-              <motion.div
-                initial={{ x: -30, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.6 }}
+            <NavbarLogo />
+          </motion.div>
+
+          <NavItems
+            items={navItems}
+            className="mx-auto"
+            renderItem={(item) => (
+              <motion.a
+                href={item.link}
+                key={item.name}
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                  activeSection === item.name
+                    ? "text-teal-600 dark:text-teal-400"
+                    : "text-gray-700 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-300"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => handleNavClick(e, item)}
+                aria-current={activeSection === item.name ? "page" : undefined}
               >
-                <NavbarLogo />
-              </motion.div>
+                {item.name}
+              </motion.a>
+            )}
+          />
 
-              <NavItems
-                items={navItems}
-                className="mx-auto"
-                renderItem={(item) => (
-                  <motion.a
-                    href={item.link}
-                    key={item.name}
-                    className={`px-3 py-2 text-sm font-medium transition-colors ${
-                      activeSection === item.name
-                        ? "text-teal-600 dark:text-teal-400"
-                        : "text-gray-700 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-300"
-                    }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={(e) => handleNavClick(e, item)}
-                    aria-current={
-                      activeSection === item.name ? "page" : undefined
-                    }
-                  >
-                    {item.name}
-                  </motion.a>
-                )}
-              />
+          <div className="flex items-center">{/* Layout filler */}</div>
+        </NavBody>
 
-              <div className="flex items-center">
-                {/* Empty div to maintain layout balance */}
-              </div>
-            </NavBody>
+        {/* Mobile Nav */}
+        <MobileNav visible>
+          <MobileNavHeader>
+            <NavbarLogo />
+            <MobileNavToggle
+              isOpen={isMenuOpen}
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            />
+          </MobileNavHeader>
 
-            {/* Mobile */}
-            <MobileNav visible={isScrolled}>
-              <MobileNavHeader>
-                <NavbarLogo />
-                <MobileNavToggle
-                  isOpen={isMenuOpen}
-                  onClick={toggleMenu}
-                  aria-label={`${
-                    isMenuOpen ? "Close" : "Open"
-                  } navigation menu`}
-                />
-              </MobileNavHeader>
-
-              <MobileNavMenu
-                isOpen={isMenuOpen}
-                onClose={() => setIsMenuOpen(false)}
+          <MobileNavMenu
+            isOpen={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+          >
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.link}
+                className={`block px-4 py-2 text-lg font-medium transition-colors ${
+                  activeSection === item.name
+                    ? "text-teal-600 dark:text-teal-400"
+                    : "text-gray-800 dark:text-gray-200 hover:text-teal-500 dark:hover:text-teal-300"
+                }`}
+                onClick={(e) => handleMobileNavClick(e, item)}
+                aria-current={activeSection === item.name ? "page" : undefined}
               >
-                {navItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.link}
-                    className={`block px-4 py-2 text-lg font-medium transition-colors ${
-                      activeSection === item.name
-                        ? "text-teal-600 dark:text-teal-400"
-                        : "text-gray-800 dark:text-gray-200 hover:text-teal-500 dark:hover:text-teal-300"
-                    }`}
-                    onClick={(e) => handleMobileNavClick(e, item)}
-                    aria-current={
-                      activeSection === item.name ? "page" : undefined
-                    }
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </MobileNavMenu>
-            </MobileNav>
-          </Navbar>
-        </motion.div>
-      )}
-    </AnimatePresence>
+                {item.name}
+              </a>
+            ))}
+          </MobileNavMenu>
+        </MobileNav>
+      </Navbar>
+    </motion.div>
   );
 }
