@@ -23,11 +23,24 @@ const fadeIn = (direction = "up", delay = 0) => ({
     x: 0,
     transition: {
       delay,
-      duration: 0.6,
-      ease: "easeOut",
+      duration: 0.8,
+      ease: [0.25, 0.1, 0.25, 1],
+      staggerChildren: 0.1,
     },
   },
 });
+
+const floatAnimation = {
+  initial: { y: 0 },
+  animate: {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
 
 const roles = ["Software Engineer", "Web Developer", "Tech Enthusiast"];
 
@@ -57,23 +70,51 @@ export default function Hero() {
             color: { value: "#38bdf8" },
             links: {
               color: "#38bdf8",
-              distance: 100,
+              distance: 150,
               enable: true,
-              opacity: 0.3,
-              width: 4,
+              opacity: 0.5,
+              width: 2,
             },
             move: {
               enable: true,
-              speed: 1.5,
-              outModes: { default: "bounce" },
+              speed: 1,
+              outModes: { default: "out" },
+              direction: "none",
+              random: false,
+              straight: false,
+              path: {
+                enable: true,
+                delay: {
+                  value: 0.1
+                },
+                options: {
+                  size: 5,
+                  draw: false,
+                  increment: 0.001
+                }
+              }
             },
             number: {
-              value: 45,
+              value: 40,
               density: { enable: true, area: 800 },
             },
-            opacity: { value: 0.4 },
+            opacity: { 
+              value: 0.7,
+              animation: {
+                enable: true,
+                speed: 0.5,
+                minimumValue: 0.2
+              }
+            },
             shape: { type: "circle" },
-            size: { value: { min: 1, max: 4 } },
+            size: { 
+              value: { min: 2, max: 4 },
+              animation: {
+                enable: true,
+                speed: 2,
+                minimumValue: 0.5
+              }
+            },
           },
           detectRetina: true,
         }}
@@ -177,55 +218,50 @@ export default function Hero() {
               animate="show"
               className="flex flex-wrap justify-center md:justify-start gap-4 pt-4"
             >
-              <a
-                href="https://github.com/IthavinduU"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <FaGithub className="w-6 h-6" style={{ color: "#181717" }} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/thavinduliyanage"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <FaLinkedin className="w-6 h-6" style={{ color: "#0A66C2" }} />
-              </a>
-              <a
-                href="mailto:thilinaThavinduLiyanage@gmail.com"
-                aria-label="Email"
-                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <HiOutlineMail
-                  className="w-6 h-6"
-                  style={{ color: "#D14836" }}
-                />
-              </a>
-              <a
-                href="https://medium.com/@thavinduwrites"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Medium"
-                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <FaMedium className="w-6 h-6" style={{ color: "#00AB6C" }} />
-              </a>
-              <a
-                href="https://buymeacoffee.com/Odbb0q1cZY"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Buy Me a Coffee"
-                className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <SiBuymeacoffee
-                  className="w-6 h-6"
-                  style={{ color: "#FF813F" }}
-                />
-              </a>
+              {[
+                {
+                  href: "https://github.com/IthavinduU",
+                  icon: <FaGithub className="w-6 h-6" style={{ color: "#181717" }} />,
+                  label: "GitHub"
+                },
+                {
+                  href: "https://www.linkedin.com/in/thavinduliyanage",
+                  icon: <FaLinkedin className="w-6 h-6" style={{ color: "#0A66C2" }} />,
+                  label: "LinkedIn"
+                },
+                {
+                  href: "mailto:thilinaThavinduLiyanage@gmail.com",
+                  icon: <HiOutlineMail className="w-6 h-6" style={{ color: "#D14836" }} />,
+                  label: "Email"
+                },
+                {
+                  href: "https://medium.com/@thavinduwrites",
+                  icon: <FaMedium className="w-6 h-6" style={{ color: "#00AB6C" }} />,
+                  label: "Medium"
+                },
+                {
+                  href: "https://buymeacoffee.com/Odbb0q1cZY",
+                  icon: <SiBuymeacoffee className="w-6 h-6" style={{ color: "#FF813F" }} />,
+                  label: "Buy Me a Coffee"
+                }
+              ].map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="p-3 rounded-full bg-gray-800 hover:bg-gray-700 transition-all duration-300"
+                  whileHover={{
+                    scale: 1.2,
+                    rotate: 5,
+                    boxShadow: "0 0 15px rgba(56, 189, 248, 0.5)"
+                  }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
             </motion.div>
 
             {/* Resume & Contact Buttons */}
@@ -258,17 +294,22 @@ export default function Hero() {
             variants={fadeIn("left", 0.6)}
             initial="hidden"
             animate="show"
-            whileHover={{ scale: 1.05, rotate: 2 }}
             className="w-full md:w-1/3 bg-black/60 backdrop-blur-lg rounded-xl p-4 shadow-xl flex justify-center"
           >
-            <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={floatAnimation}
+              className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg"
+            >
               <img
                 src="hero.png"
                 alt="Thavindu"
                 className="w-full h-full object-cover rounded-full"
               />
               <div className="absolute inset-0 pointer-events-none rounded-full scanning-effect" />
-            </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent animate-pulse" />
+            </motion.div>
           </motion.div>
         </div>
       </div>
@@ -279,23 +320,40 @@ export default function Hero() {
           background: linear-gradient(
             120deg,
             transparent 0%,
-            rgba(255, 255, 255, 0.25) 50%,
+            rgba(255, 255, 255, 0.15) 50%,
             transparent 100%
           );
-          animation: scan 2.5s linear infinite;
+          animation: scan 3s ease-in-out infinite;
           opacity: 0;
-          transition: opacity 0.3s ease-in-out;
+          transition: opacity 0.5s ease-in-out;
         }
         div.relative:hover > .scanning-effect {
-          opacity: 1;
+          opacity: 0.8;
         }
         @keyframes scan {
           0% {
             transform: translateX(-100%) translateY(0);
           }
+          50% {
+            transform: translateX(0%) translateY(0);
+          }
           100% {
             transform: translateX(100%) translateY(0);
           }
+        }
+
+        /* Add new animations */
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+          }
+        }
+
+        .animate-pulse {
+          animation: pulse-glow 3s ease-in-out infinite;
         }
       `}</style>
     </section>
