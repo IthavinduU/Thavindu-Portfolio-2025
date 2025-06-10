@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ExternalLink, Github, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WobbleCard } from "./ui/wobble-card";
 import { cn } from "../lib/utils";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Projects data with actual image URLs and lazy loading
+// Projects data with optimized images
 const projects = [
   {
     title: "EmotiLive : Real Time Student Monitoring System",
@@ -22,6 +22,8 @@ const projects = [
     ],
     github: "https://github.com/IthavinduU/EmotiLive--FS",
     image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=70",
+    imageLarge:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
   },
   {
@@ -31,6 +33,8 @@ const projects = [
     technologies: ["Kotlin", "Android Studio", "XML"],
     github: "https://github.com/IthavinduU/Dice-Maniacs",
     image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=70",
+    imageLarge:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
   },
   {
@@ -40,6 +44,8 @@ const projects = [
     technologies: ["Python", "Dart/Flutter", "Firebase", "Docker", "Jenkins"],
     github: "https://github.com/IthavinduU/Prettify",
     image:
+      "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?auto=format&fit=crop&w=600&q=70",
+    imageLarge:
       "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?auto=format&fit=crop&w=800&q=80",
   },
   {
@@ -49,18 +55,176 @@ const projects = [
     technologies: ["Python", "Node.js", "NPM", "HTML5"],
     github: "https://github.com/IthavinduU/color-contrast-checker",
     image:
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=70",
+    imageLarge:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
   },
 ];
+
+// Optimized animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      duration: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: "easeOut",
+    },
+  },
+};
+
+const modalVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.2,
+      ease: "easeOut",
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      duration: 0.15,
+      ease: "easeIn",
+    },
+  },
+};
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState({});
 
-  // Lock scroll when modal is open
+  // Memoized scroll lock effect
   useEffect(() => {
-    document.body.style.overflow = selectedProject ? "hidden" : "auto";
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }
   }, [selectedProject]);
+
+  // Optimized handlers
+  const handleProjectClick = useCallback((project) => {
+    setSelectedProject(project);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedProject(null);
+  }, []);
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Escape") {
+      setSelectedProject(null);
+    }
+  }, []);
+
+  // Memoized image load handler
+  const handleImageLoad = useCallback((projectTitle) => {
+    setImageLoaded((prev) => ({ ...prev, [projectTitle]: true }));
+  }, []);
+
+  // Memoized project cards
+  const projectCards = useMemo(
+    () =>
+      projects.map((project, index) => (
+        <motion.div
+          key={project.title}
+          variants={itemVariants}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="transition-transform cursor-pointer h-full will-change-transform"
+          onClick={() => handleProjectClick(project)}
+          aria-label={`View details for project ${project.title}`}
+        >
+          <WobbleCard
+            containerClassName={cn(
+              "h-full bg-white dark:bg-[#112D3B] border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col"
+            )}
+          >
+            <div className="relative">
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                loading="lazy"
+                className={cn(
+                  "w-full h-48 object-cover rounded-t-2xl transition-opacity duration-300",
+                  imageLoaded[project.title] ? "opacity-100" : "opacity-0"
+                )}
+                onLoad={() => handleImageLoad(project.title)}
+                decoding="async"
+              />
+              {!imageLoaded[project.title] && (
+                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-t-2xl" />
+              )}
+            </div>
+
+            <div className="relative z-10 p-6 flex flex-col flex-grow justify-between">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-3">
+                  {project.description}
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <p className="text-xs font-medium mb-2 text-gray-600 dark:text-gray-400">
+                  Technologies:
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {project.technologies.slice(0, 4).map((tech, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-900 dark:text-white rounded-md"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 4 && (
+                    <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md">
+                      +{project.technologies.length - 4}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 flex gap-2">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1 px-3 py-2 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors duration-200"
+                >
+                  <Github className="w-3 h-3" />
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </WobbleCard>
+        </motion.div>
+      )),
+    [projects, handleProjectClick, handleImageLoad, imageLoaded]
+  );
 
   return (
     <>
@@ -70,180 +234,121 @@ export default function Projects() {
       >
         <div className="container mx-auto">
           {/* Section Title */}
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.4 }}
+            className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
-              <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
-                <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-                  Featured Projects
-                </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                Featured Projects
               </span>
             </h2>
-          </motion.h2>
+          </motion.div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50, y: 20 }}
-                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                whileHover={{ scale: 1.015 }}
-                whileTap={{ scale: 0.98 }}
-                className="transition-transform cursor-pointer h-full"
-                onClick={() => setSelectedProject(project)}
-                aria-label={`View details for project ${project.title}`}
-              >
-                <WobbleCard
-                  containerClassName={cn(
-                    "h-full bg-white dark:bg-[#112D3B] border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col"
-                  )}
-                >
-                  <img
-                    src={project.image}
-                    alt={`${project.title} preview`}
-                    loading="lazy"
-                    className="w-full h-48 object-cover rounded-t-2xl"
-                    decoding="async"
-                    importance="low"
-                  />
-                  <div className="relative z-10 p-6 flex flex-col flex-grow justify-between">
-                    <div>
-                      <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                        {project.title}
-                      </h3>
-                      <p className="mt-2 text-[15px] md:text-base text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
-                        {project.description}
-                      </p>
-                    </div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr"
+          >
+            {projectCards}
+          </motion.div>
 
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold mb-2 text-gray-600 dark:text-gray-400">
-                        Technologies Used:
-                      </p>
-                      <ul className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, i) => (
-                          <li
-                            key={i}
-                            className="px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-900 dark:text-white rounded-md"
-                          >
-                            {tech}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mt-6 flex gap-3">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-all"
-                      >
-                        <Github className="w-4 h-4" />
-                        View on Github
-                      </a>
-                    </div>
-                  </div>
-                </WobbleCard>
-              </motion.div>
-            ))}
-          </div>
-
-          <p className="mt-8 text-center text-base sm:text-lg text-gray-500 dark:text-gray-400">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="mt-8 text-center text-base text-gray-500 dark:text-gray-400"
+          >
             Want to see more? Check out my{" "}
             <a
               href="https://github.com/IthavinduU"
-              className="text-cyan-500 hover:underline"
+              className="text-cyan-500 hover:text-cyan-400 transition-colors duration-200"
               target="_blank"
               rel="noopener noreferrer"
             >
               GitHub
             </a>
-          </p>
+          </motion.p>
         </div>
       </section>
 
-      {/* Modal Preview */}
-      <AnimatePresence>
+      {/* Optimized Modal */}
+      <AnimatePresence mode="wait">
         {selectedProject && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4 sm:p-6"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedProject(null)}
+            transition={{ duration: 0.15 }}
+            onClick={handleCloseModal}
+            onKeyDown={handleKeyDown}
             tabIndex={-1}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setSelectedProject(null);
-            }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", stiffness: 160, damping: 20 }}
-              className="bg-white dark:bg-[#0B1F2E] max-w-lg w-full rounded-xl p-6 relative shadow-xl border dark:border-gray-700 overflow-y-auto max-h-[90vh]"
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-white dark:bg-[#0B1F2E] max-w-lg w-full rounded-xl p-6 relative shadow-2xl border dark:border-gray-700 overflow-y-auto max-h-[90vh]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 aria-label="Close modal"
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 transition-colors"
+                onClick={handleCloseModal}
+                className="absolute top-4 right-4 text-gray-700 dark:text-gray-300 hover:text-red-500 transition-colors duration-200 p-1"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
 
-              <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 pr-8">
                 {selectedProject.title}
               </h3>
 
               <img
-                src={selectedProject.image}
+                src={selectedProject.imageLarge}
                 alt={`${selectedProject.title} large preview`}
                 loading="lazy"
-                className="rounded-lg w-full mb-6 object-cover max-h-64 mx-auto"
+                className="rounded-lg w-full mb-4 object-cover max-h-48"
                 decoding="async"
-                importance="low"
               />
 
-              <p className="text-base md:text-lg text-justify text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 {selectedProject.description}
               </p>
 
-              <div className="mt-6">
-                <p className="text-sm font-semibold mb-2 text-gray-600 dark:text-gray-400">
+              <div className="mb-6">
+                <p className="text-sm font-medium mb-2 text-gray-600 dark:text-gray-400">
                   Technologies Used:
                 </p>
-                <ul className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2">
                   {selectedProject.technologies.map((tech, i) => (
-                    <li
+                    <span
                       key={i}
-                      className="px-3 py-1 text-sm bg-emerald-100 dark:bg-emerald-700 text-emerald-900 dark:text-white rounded-md"
+                      className="px-2 py-1 text-xs bg-emerald-100 dark:bg-emerald-700 text-emerald-900 dark:text-white rounded-md"
                     >
                       {tech}
-                    </li>
+                    </span>
                   ))}
-                </ul>
+                </div>
               </div>
 
-              <div className="mt-8 flex gap-4 justify-center">
+              <div className="flex justify-center">
                 <a
                   href={selectedProject.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors duration-200"
                 >
-                  <Github className="w-5 h-5" />
-                  View on Github
+                  <Github className="w-4 h-4" />
+                  View on GitHub
                 </a>
               </div>
             </motion.div>
