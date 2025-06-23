@@ -42,27 +42,27 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: <Facebook className="w-5 h-5" />,
-      href: "https://www.facebook.com/t.Thavindu.rathayaka?mibextid=ZbWKwL",
+      href: "",
       label: "Facebook",
     },
     {
       icon: <Twitter className="w-5 h-5" />,
-      href: "https://x.com/Thavindu_rathnaya?s=09",
+      href: "",
       label: "Twitter",
     },
     {
       icon: <Instagram className="w-5 h-5" />,
-      href: "https://www.instagram.com/Thavindu__Liyanage?igsh=MjdhcHlpdjd6NnR6",
+      href: " ",
       label: "Instagram",
     },
     {
       icon: <Linkedin className="w-5 h-5" />,
-      href: "https://www.linkedin.com/in/Thavindu-Liyanage-02631b1b8/",
+      href: "",
       label: "LinkedIn",
     },
     {
       icon: <Github className="w-5 h-5" />,
-      href: "https://github.com/ThavinduLiyanage",
+      href: "",
       label: "GitHub",
     },
   ];
@@ -148,6 +148,10 @@ export default function Footer() {
                 Thavindu Liyanage
               </span>
             </span>
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+              You can have this portfolio template if you want. Just let me know
+              . . .
+            </p>
           </motion.p>
         </motion.div>
       </div>
