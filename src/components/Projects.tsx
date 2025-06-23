@@ -230,20 +230,28 @@ export default function Projects() {
     <>
       <section
         id="projects"
-        className="py-16 px-4 sm:px-6 md:px-8 bg-gray-100 dark:bg-[#0A1F2E]"
+        className="py-16 px-4 sm:px-6 md:px-8 relative z-10"
       >
-        <div className="container mx-auto">
-          {/* Section Title */}
+        <div className="container mx-auto max-w-6xl">
+          {/* Section Title - Matching Road Map styling */}
           <motion.div
+            className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.4 }}
-            className="text-center mb-12"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-                Featured Projects
+            <h2 className="text-center text-4xl font-bold text-gray-800 dark:text-white mb-16">
+              <span className="bg-gradient-to-r from-blue-500 to-teal-500 text-transparent bg-clip-text">
+                <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white group relative text-center">
+                    <span className="relative z-10 bg-gradient-to-r from-teal-500 to-blue-500 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300">
+                      <span className="bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                        Featured Projects{" "}
+                      </span>
+                    </span>
+                  </h2>
+                </span>
               </span>
             </h2>
           </motion.div>
@@ -259,23 +267,32 @@ export default function Projects() {
             {projectCards}
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="mt-8 text-center text-base text-gray-500 dark:text-gray-400"
-          >
-            Want to see more? Check out my{" "}
-            <a
-              href="https://github.com/IthavinduU"
-              className="text-cyan-500 hover:text-cyan-400 transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
+          {/* Bottom Text - Fixed with better visibility */}
+          <div className="mt-12 text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-base md:text-lg text-gray-100 dark:text-gray-200 font-medium"
+              style={{
+                textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+              }}
             >
-              GitHub
-            </a>
-          </motion.p>
+              Want to see more?{" "}
+              <a
+                href="https://github.com/IthavinduU"
+                className="text-cyan-400 hover:text-cyan-300 dark:text-cyan-400 dark:hover:text-cyan-300 transition-colors duration-200 underline decoration-2 underline-offset-2 hover:decoration-cyan-300"
+                style={{
+                  textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+                }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Check out my GitHub
+              </a>
+            </motion.p>
+          </div>
         </div>
       </section>
 
