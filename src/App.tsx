@@ -56,8 +56,8 @@ function App() {
           property="og:description"
           content="Explore projects, skills, and experience of Thavindu Liyanage, a passionate software engineer."
         />
-        <meta property="og:image" content="https://thavindu.me/preview.png" />
-        <meta property="og:url" content="https://thavindu.me" />
+        <meta property="og:image" content="https://thavindu.live/preview.png" />
+        <meta property="og:url" content="https://thavindu.live" />
         <meta property="og:type" content="website" />
       </Helmet>
 

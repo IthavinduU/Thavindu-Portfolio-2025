@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://thavindu.me/sitemap.xml
+Sitemap: https://thavindu.live/sitemap.xml
