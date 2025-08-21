@@ -66,8 +66,8 @@ const RoadMap = () => {
       place: "University of Westminster - United Kingdom",
       duration: "2021 - 2025",
       details: [
-        "Major in Backend Development",
-        "Final Year Research Project: AI-based Student Monitoring System",
+        "2nd Class Upper Division with a Weighted Avg of 67.3%",
+        "Final Year Research Project: AI-based Student Monitoring System with ESRGANs",
       ],
       icon: FaGraduationCap,
     },
@@ -90,6 +90,16 @@ const RoadMap = () => {
   ];
 
   const experience = [
+       {
+      title: "Applications Engineer - Tier 2",
+      place: "Petvisor - United Kingdom",
+      duration: "Sep 2025 - Present",
+      details: [
+        "L2 Application support team.",
+      ],
+
+      icon: FaUserTie,
+    },
     {
       title: "Software Engineering Intern",
       place: "Petvisor - United Kingdom",
@@ -108,15 +118,6 @@ const RoadMap = () => {
         "Delivering high-quality, streamlined software and web solutions tailored to diverse client requirements.",
       ],
       icon: FaUserTie,
-    },
-    {
-      title: "Technical Writer",
-      place: "Medium",
-      duration: "2023 - Present",
-      details: [
-        "Contributing to the community with the knowledge I pursue throughout my technical journey.",
-      ],
-      icon: FaPenNib,
     },
   ];
 
