@@ -14,7 +14,7 @@ const Loader = () => {
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#092537] text-white"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.5 } }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
     >
       {/* Particle Background */}
       <Particles
@@ -36,7 +36,7 @@ const Loader = () => {
             },
             modes: {
               push: { quantity: 4 },
-              repulse: { distance: 100, duration: 0.4 },
+              repulse: { distance: 100, duration: 0.2 },
             },
           },
           particles: {
@@ -72,7 +72,7 @@ const Loader = () => {
 
       {/* Loading Text */}
       <div className="relative z-10 text-3xl font-semibold animate-bounce">
-        Putting things together...
+        Hold on...
       </div>
     </motion.div>
   );
